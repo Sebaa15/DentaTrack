@@ -1,11 +1,16 @@
 package org.ucb.dentatrack.presentation.signin
 
+import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,70 +27,55 @@ import dentatrack.shared.generated.resources.*
 
 @Composable
 fun SigninPage() {
-
-    var userSignIn by remember {
+   var email by remember {
+       mutableStateOf("")
+   }
+    var password by remember {
         mutableStateOf("")
     }
-
-    var passwordSignIn by remember {
-        mutableStateOf("")
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        verticalArrangement = Arrangement.Center,
+    Column (
+        modifier=Modifier.fillMaxSize().padding(24.dp),
+        verticalArrangement= Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
+    ){
         Text(
-            text = "Sign In"
+            text="DentalTrack",
+            style= MaterialTheme.typography.headlineMedium
         )
-
-        TextField(
-            value = userSignIn,
-            onValueChange = {
-                userSignIn = it
-            },
-            label = {
-                Text(
-                    text = stringResource(Res.string.signin_user)
-                )
-            },
-            placeholder = {
-                Text("Email Address")
-            },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+        Spacer(
+            modifier=Modifier.height(32.dp)
         )
-
-        TextField(
-            value = passwordSignIn,
-            onValueChange = {
-                passwordSignIn = it
+        OutlinedTextField(
+            value=email,
+            onValueChange = {email=it},
+            modifier=Modifier.fillMaxWidth(),
+            label={
+                Text("Correo Electronico")
             },
-            label = {
-                Text(
-                    text = stringResource(Res.string.signin_password)
-                )
-            },
-            placeholder = {
-                Text("Password")
-            },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            singleLine = true
         )
-
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+        OutlinedTextField(
+            value=password,
+            onValueChange = {password=it},
+            modifier=Modifier.fillMaxWidth(),
+            label={
+                Text("Contraseña")
+            },
+            singleLine = true
+        )
+        Spacer(
+            modifier=Modifier.height(24.dp)
+        )
         Button(
-            modifier = Modifier.fillMaxWidth(),
             onClick = {
-                // TODO
-            }
-        ) {
-            Text(
-                text = stringResource(Res.string.signin_button)
-            )
+
+            },
+            modifier=Modifier.fillMaxWidth()
+        ){
+            Text("Iniciar Sesion")
         }
     }
 }
