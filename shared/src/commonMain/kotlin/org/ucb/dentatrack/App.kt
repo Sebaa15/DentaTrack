@@ -1,29 +1,59 @@
 package org.ucb.dentatrack
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import org.ucb.dentatrack.Login.presentation.Screen.LoginScreen
+import org.ucb.dentatrack.Register.Presentation.Screen.RegisterScreen
 
-import dentatrack.shared.generated.resources.Res
-import dentatrack.shared.generated.resources.compose_multiplatform
-import org.ucb.dentatrack.presentation.signin.SigninPage
+private enum class AppScreen {
+    LOGIN,
+    REGISTER,
+    ODONTOGRAM
+}
 
 @Composable
-@Preview
 fun App() {
+
+    var currentScreen by remember {
+        mutableStateOf(AppScreen.LOGIN)
+    }
+
     MaterialTheme {
-        SigninPage()
+
+        when (currentScreen) {
+
+            AppScreen.LOGIN -> {
+
+                LoginScreen(
+                    onLoginSuccess = {
+                        currentScreen = AppScreen.ODONTOGRAM
+                    },
+                    onRegisterClick = {
+                        currentScreen = AppScreen.REGISTER
+                    }
+                )
+            }
+
+            AppScreen.REGISTER -> {
+
+                RegisterScreen(
+                    onRegisterSuccess = {
+                        currentScreen = AppScreen.LOGIN
+                    },
+                    onBackToLogin = {
+                        currentScreen = AppScreen.LOGIN
+                    }
+                )
+            }
+
+            AppScreen.ODONTOGRAM -> {
+
+                // Próxima pantalla
+            }
+        }
     }
 }
