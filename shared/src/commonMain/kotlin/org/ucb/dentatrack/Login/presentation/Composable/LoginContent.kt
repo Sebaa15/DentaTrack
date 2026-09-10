@@ -44,7 +44,7 @@ fun LoginContent(
         )
 
         Text(
-            text = "PELIS"
+            text = "DentaTrack"
         )
 
         Spacer(
