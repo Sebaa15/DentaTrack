@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.Register.presentation.State
+package org.ucb.dentatrack.Register.Presentation.State
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

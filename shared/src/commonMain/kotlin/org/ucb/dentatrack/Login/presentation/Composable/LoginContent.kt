@@ -15,15 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.ucb.dentatrack.Login.presentation.State.LoginIntent
-import org.ucb.dentatrack.feature.login.presentation.state.LoginState
+import org.ucb.dentatrack.Login.presentation.Viewmodel.LoginEvent
 import androidx.compose.material3.TextButton
+import org.ucb.dentatrack.login.presentation.Viewmodel.LoginState
 
 @Composable
 fun LoginContent(
     state: LoginState,
-    onIntent: (LoginIntent) -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    onEvent: (LoginEvent) -> Unit
 ) {
 
     Column(
@@ -54,8 +54,8 @@ fun LoginContent(
         OutlinedTextField(
             value = state.email,
             onValueChange = { email ->
-                onIntent(
-                    LoginIntent.EmailChanged(email)
+                onEvent(
+                    LoginEvent.EmailChanged(email)
                 )
             },
             label = {
@@ -72,8 +72,8 @@ fun LoginContent(
         OutlinedTextField(
             value = state.password,
             onValueChange = { password ->
-                onIntent(
-                    LoginIntent.PasswordChanged(password)
+                onEvent(
+                    LoginEvent.PasswordChanged(password)
                 )
             },
             label = {
@@ -100,8 +100,8 @@ fun LoginContent(
 
         Button(
             onClick = {
-                onIntent(
-                    LoginIntent.LoginClicked
+                onEvent(
+                    LoginEvent.LoginClicked
                 )
             },
             modifier = Modifier.fillMaxWidth()

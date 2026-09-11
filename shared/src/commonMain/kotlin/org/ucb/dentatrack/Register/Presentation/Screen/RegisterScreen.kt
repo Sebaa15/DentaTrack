@@ -9,13 +9,13 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.ucb.dentatrack.Register.Data.Repository.FakeRegisterRepository
 import org.ucb.dentatrack.Register.Domain.UseCase.RegisterUseCase
 import org.ucb.dentatrack.Register.Presentation.Composable.RegisterContent
-import org.ucb.dentatrack.Register.presentation.State.RegisterViewModel
+import org.ucb.dentatrack.Register.Presentation.State.RegisterViewModel
 
 @Composable
 fun RegisterScreen(
     onRegisterSuccess: () -> Unit,
     onBackToLogin: () -> Unit,
-    viewModel:RegisterViewModel= koinViewModel()
+    viewModel: RegisterViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()

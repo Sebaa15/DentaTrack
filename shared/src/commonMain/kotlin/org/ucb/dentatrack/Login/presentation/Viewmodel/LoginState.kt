@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.feature.login.presentation.state
+package org.ucb.dentatrack.Login.presentation.Viewmodel
 
 data class LoginState(
     val email: String = "",
@@ -6,3 +6,4 @@ data class LoginState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
+

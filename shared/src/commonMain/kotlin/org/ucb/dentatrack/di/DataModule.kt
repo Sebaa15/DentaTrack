@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.Shared.di
+package org.ucb.dentatrack.di
 
 import org.koin.dsl.module
 import org.ucb.dentatrack.Login.Data.Repository.FakeAuthRepository

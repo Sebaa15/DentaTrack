@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.Shared.di
+package org.ucb.dentatrack.di
 
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

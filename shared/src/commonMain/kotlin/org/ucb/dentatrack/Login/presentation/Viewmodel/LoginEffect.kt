@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.Login.presentation.State
+package org.ucb.dentatrack.Login.presentation.Viewmodel
 
 sealed interface LoginEffect {
 

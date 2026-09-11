@@ -1,17 +1,21 @@
-package org.ucb.dentatrack.Login.presentation.State
+package org.ucb.dentatrack.Login.presentation.Viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.ucb.dentatrack.Login.Domain.Model.LoginError
 import org.ucb.dentatrack.Login.Domain.Model.LoginResult
 import org.ucb.dentatrack.Login.Domain.UseCase.LoginUseCase
-import org.ucb.dentatrack.feature.login.presentation.state.LoginState
+import org.ucb.dentatrack.login.presentation.Viewmodel.LoginState
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase
@@ -19,8 +23,7 @@ class LoginViewModel(
 
     private val _state = MutableStateFlow(LoginState())
 
-    val state: StateFlow<LoginState> =
-        _state.asStateFlow()
+    val state=_state.asStateFlow()
 
     private val _effect = MutableSharedFlow<LoginEffect>(
         extraBufferCapacity = 1
@@ -29,11 +32,11 @@ class LoginViewModel(
     val effect: SharedFlow<LoginEffect> =
         _effect.asSharedFlow()
 
-    fun onIntent(intent: LoginIntent) {
+    fun emitEvent(intent: LoginEvent) {
 
         when (intent) {
 
-            is LoginIntent.EmailChanged -> {
+            is LoginEvent.EmailChanged -> {
                 _state.update {
                     it.copy(
                         email = intent.email,
@@ -42,7 +45,7 @@ class LoginViewModel(
                 }
             }
 
-            is LoginIntent.PasswordChanged -> {
+            is LoginEvent.PasswordChanged -> {
                 _state.update {
                     it.copy(
                         password = intent.password,
@@ -51,12 +54,16 @@ class LoginViewModel(
                 }
             }
 
-            LoginIntent.LoginClicked -> {
+            LoginEvent.LoginClicked -> {
                 login()
             }
         }
     }
-
+    private fun emitEffect(
+        effect: LoginEffect
+    ){
+        viewModelScope.launch{_effect.emit(effect)}
+    }
     private fun login() {
 
         val currentState = _state.value
@@ -69,18 +76,16 @@ class LoginViewModel(
         when (result) {
 
             LoginResult.Success -> {
-
                 _state.update {
                     it.copy(
                         error = null
                     )
                 }
 
-                _effect.tryEmit(
+                emitEffect(
                     LoginEffect.NavigateToOdontogram
                 )
             }
-
             is LoginResult.Error -> {
 
                 val message = when (result.type) {
