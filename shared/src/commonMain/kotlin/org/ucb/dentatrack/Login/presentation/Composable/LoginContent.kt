@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.ucb.dentatrack.Login.presentation.Viewmodel.LoginEvent
 import androidx.compose.material3.TextButton
-import org.ucb.dentatrack.login.presentation.Viewmodel.LoginState
+import org.ucb.dentatrack.Login.presentation.Viewmodel.LoginState
 
 @Composable
 fun LoginContent(
