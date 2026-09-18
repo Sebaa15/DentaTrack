@@ -1,5 +1,6 @@
 package org.ucb.dentatrack.navigation
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,6 +37,9 @@ fun AppNavHost() {
                     navController.popBackStack()
                 }
             )
+        }
+        composable<NavRoute.Odontogram> {
+            Text("ODONTOGRAMA")
         }
     }
 }
