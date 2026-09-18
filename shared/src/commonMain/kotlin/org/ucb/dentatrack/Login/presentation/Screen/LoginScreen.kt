@@ -14,8 +14,6 @@ import org.ucb.dentatrack.navigation.NavRoute
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    onLoginSuccess: () -> Unit = {},
-    onRegisterClick: () -> Unit = {},
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()

@@ -1,6 +1,5 @@
 package org.ucb.dentatrack.Login.Domain.UseCase
 
-import org.ucb.dentatrack.Login.Data.Repository.FakeAuthRepository
 import org.ucb.dentatrack.Login.Domain.Model.LoginError
 import org.ucb.dentatrack.Login.Domain.Model.LoginResult
 import org.ucb.dentatrack.Login.Domain.Repository.AuthRepository

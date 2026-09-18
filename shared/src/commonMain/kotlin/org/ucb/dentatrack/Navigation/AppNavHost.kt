@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.Navigation
+package org.ucb.dentatrack.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
