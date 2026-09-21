@@ -2,7 +2,9 @@ package org.ucb.dentatrack.Login.Domain.Model
 
 sealed interface LoginResult {
 
-    data object Success : LoginResult
+    data class Success(
+        val user: User
+    ): LoginResult
 
     data class Error(
         val type: LoginError

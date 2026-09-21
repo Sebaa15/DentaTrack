@@ -10,17 +10,17 @@ class LoginUseCase(
     private val repository: AuthRepository
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         emailValue: String,
         passwordValue: String
     ): LoginResult {
 
         val email = Email(
-            value = emailValue.trim()
+            emailValue.trim()
         )
 
         val password = Password(
-            value = passwordValue
+            passwordValue
         )
 
         if (email.isBlank()) {
@@ -47,17 +47,19 @@ class LoginUseCase(
             )
         }
 
-        val loginSuccess = repository.login(
-            email = email,
-            password = password
+        return repository.login(
+            email=email,password=password
+        ).fold(
+            onSuccess = {
+                user->LoginResult.Success(user=user)
+            },
+            onFailure = {
+                LoginResult.Error(
+                    LoginError.INVALID_CREDENTIALS
+                )
+            }
         )
 
-        return if (loginSuccess) {
-            LoginResult.Success
-        } else {
-            LoginResult.Error(
-                LoginError.INVALID_CREDENTIALS
-            )
-        }
+
     }
 }

@@ -3,7 +3,7 @@ package org.ucb.dentatrack.Login.Data.Mapper
 import org.ucb.dentatrack.Login.Data.Dto.LoginResponseDto
 import org.ucb.dentatrack.Login.Domain.Model.User
 
-fun LoginResponseDto.Domain(): User{
+fun LoginResponseDto.toDomain(): User{
     return User(
         id=id,
         fullName=fullName,

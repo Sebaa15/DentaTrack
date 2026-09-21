@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.Register.Presentation.State
+package org.ucb.dentatrack.Register.Presentation.VIewmodel
 
 data class RegisterState(
     val fullName: String = "",

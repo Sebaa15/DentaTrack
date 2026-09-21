@@ -4,12 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import org.koin.compose.viewmodel.koinViewModel
-import org.ucb.dentatrack.Register.Data.Repository.FakeRegisterRepository
-import org.ucb.dentatrack.Register.Domain.UseCase.RegisterUseCase
 import org.ucb.dentatrack.Register.Presentation.Composable.RegisterContent
-import org.ucb.dentatrack.Register.Presentation.State.RegisterViewModel
+import org.ucb.dentatrack.Register.Presentation.VIewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen(

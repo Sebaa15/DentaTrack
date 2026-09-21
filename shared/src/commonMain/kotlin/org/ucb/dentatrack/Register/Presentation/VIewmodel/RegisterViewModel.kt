@@ -1,4 +1,4 @@
-package org.ucb.dentatrack.Register.Presentation.State
+package org.ucb.dentatrack.Register.Presentation.VIewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.update
 import org.ucb.dentatrack.Register.Domain.Model.RegisterError
 import org.ucb.dentatrack.Register.Domain.Model.RegisterResult
 import org.ucb.dentatrack.Register.Domain.UseCase.RegisterUseCase
-import org.ucb.dentatrack.Register.Presentation.State.RegisterState
 
 class RegisterViewModel(
     private val registerUseCase: RegisterUseCase

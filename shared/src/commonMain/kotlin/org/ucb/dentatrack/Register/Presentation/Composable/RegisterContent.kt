@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import org.ucb.dentatrack.Register.Presentation.State.RegisterState
+import org.ucb.dentatrack.Register.Presentation.VIewmodel.RegisterState
 import androidx.compose.material3.TextButton
 
 @Composable

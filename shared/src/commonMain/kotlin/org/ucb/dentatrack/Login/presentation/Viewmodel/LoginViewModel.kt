@@ -48,29 +48,22 @@ class LoginViewModel(
     }
 
     private fun login() {
-
-        val result = loginUseCase(
-            emailValue = state.value.email,
-            passwordValue = state.value.password
-        )
-
-        when (result) {
-
-            LoginResult.Success -> {
-                _state.update {
-                    it.copy(error = null)
+        viewModelScope.launch {
+            val result=loginUseCase(
+                emailValue=state.value.email,
+                passwordValue = state.value.password
+            )
+            when(result){
+                is LoginResult.Success -> {
+                    _state.update {
+                        it.copy(error=null)
+                    }
+                    emitEffect(LoginEffect.NavigateToOdontogram)
                 }
-
-                emitEffect(
-                    LoginEffect.NavigateToOdontogram
-                )
-            }
-
-            is LoginResult.Error -> {
-                _state.update {
-                    it.copy(
-                        error = getErrorMessage(result.type)
-                    )
+                is LoginResult.Error -> {
+                    _state.update {
+                        it.copy(error=getErrorMessage(result.type))
+                    }
                 }
             }
         }
