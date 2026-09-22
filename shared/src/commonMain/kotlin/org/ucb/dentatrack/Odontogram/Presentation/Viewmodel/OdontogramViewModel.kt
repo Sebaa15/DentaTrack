@@ -24,9 +24,16 @@ class OdontogramViewModel(private val getOdontogramUseCase: GetOdontogramUseCase
             OdontogramEvent.LoadOdontogram->{
                 loadOdontogram()
             }
-            is OdontogramEvent.ToothSelected->{
-                val tooth=state.value.teeth.find{
-                    it.number==event.toothNumber
+            is OdontogramEvent.ToothSelected-> {
+                val tooth = state.value.teeth.find {
+                    it.number == event.toothNumber
+                }
+                _state.update {
+                    it.copy(selectedTooth = tooth)
+                }
+                if (tooth != null) {
+                    emitEffect(OdontogramEffect.NavigateToTreatmentDetail
+                        (toothNumber = tooth.number))
                 }
             }
         }

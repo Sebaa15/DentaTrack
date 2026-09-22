@@ -15,7 +15,9 @@ sealed class NavRoute {
     data object Odontogram : NavRoute()
 
     @Serializable
-    data object TreatmentDetail : NavRoute()
+    data class TreatmentDetail(
+        val toothNumber: Int
+    ): NavRoute()
 
     @Serializable
     data object Profile : NavRoute()
