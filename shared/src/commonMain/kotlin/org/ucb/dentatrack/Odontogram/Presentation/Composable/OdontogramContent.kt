@@ -44,8 +44,7 @@ fun OdontogramContent(state: OdontogramState,onToothSelected: (Int)-> Unit) {
         Spacer(
             modifier=Modifier.height(24.dp)
         )
-        if(state.teeth.isEmpty())
-        {
+        if(state.teeth.isEmpty()) {
             Text( text="No existen placas registradas")
         }else{
             FlowRow(
@@ -61,19 +60,17 @@ fun OdontogramContent(state: OdontogramState,onToothSelected: (Int)-> Unit) {
                 }
             }
             }
-
-        }
-    state.selectedTooth?.let{tooth->
-        Spacer(
-            modifier=Modifier.height(24.dp)
-        )
-        Text(text="Pieza seleccionada: ${tooth.number}",style= MaterialTheme.typography.titleMedium)
-        Text(text="Estado: ${getStatusText(tooth.status)}")
-        tooth.treatment?.let{treatment->
-            Text(text="Tratamiento: ${treatment}")
+        state.selectedTooth?.let{tooth->
+            Spacer(
+                modifier=Modifier.height(24.dp)
+            )
+            Text(text="Pieza seleccionada: ${tooth.number}",style= MaterialTheme.typography.titleMedium)
+            Text(text="Estado: ${getStatusText(tooth.status)}")
+            tooth.treatment?.let{treatment->
+                Text(text="Tratamiento: ${treatment}")
+            }
         }
     }
-
 }
 
 @Composable

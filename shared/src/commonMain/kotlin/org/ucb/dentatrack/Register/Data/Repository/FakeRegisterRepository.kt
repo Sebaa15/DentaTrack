@@ -10,6 +10,6 @@ class FakeRegisterRepository : RegisterRepository {
         password: String
     ): Boolean {
 
-        return email != "paciente@dentatrack.com"
+        return email != "paciente@gmail.com"
     }
 }
