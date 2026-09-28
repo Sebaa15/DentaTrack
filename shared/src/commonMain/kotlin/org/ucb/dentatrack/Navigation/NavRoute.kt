@@ -21,4 +21,8 @@ sealed class NavRoute {
 
     @Serializable
     data object Profile : NavRoute()
+    @Serializable
+    data object Catalog : NavRoute()
+    @Serializable
+    data object Crypto:NavRoute()
 }

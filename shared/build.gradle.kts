@@ -55,6 +55,8 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor3)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
