@@ -2,22 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0b913ff3112797db6e4778c428853861",
+    "identityHash": "4e06001e6e380f1a85aa7534580c21dc",
     "entities": [
       {
-        "tableName": "logged_user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`localId` INTEGER NOT NULL, `userId` TEXT NOT NULL, `fullName` TEXT NOT NULL, `email` TEXT NOT NULL, PRIMARY KEY(`localId`))",
+        "tableName": "users",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `fullName` TEXT NOT NULL, `email` TEXT NOT NULL, `password` TEXT NOT NULL)",
         "fields": [
           {
-            "fieldPath": "localId",
-            "columnName": "localId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "userId",
-            "columnName": "userId",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -31,14 +25,31 @@
             "columnName": "email",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "password",
+            "columnName": "password",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
-            "localId"
+            "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_users_email",
+            "unique": true,
+            "columnNames": [
+              "email"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_users_email` ON `${TABLE_NAME}` (`email`)"
+          }
+        ]
       },
       {
         "tableName": "teeth",
@@ -72,7 +83,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0b913ff3112797db6e4778c428853861')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4e06001e6e380f1a85aa7534580c21dc')"
     ]
   }
 }

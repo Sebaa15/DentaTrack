@@ -8,7 +8,7 @@ class RegisterUseCase(
     private val repository: RegisterRepository
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         fullName: String,
         email: String,
         password: String,

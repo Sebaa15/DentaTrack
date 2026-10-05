@@ -2,7 +2,7 @@ package org.ucb.dentatrack.Register.Domain.Repository
 
 interface RegisterRepository {
 
-    fun register(
+    suspend fun register(
         fullName: String,
         email: String,
         password: String

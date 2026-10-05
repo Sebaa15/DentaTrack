@@ -1,6 +1,5 @@
 package org.ucb.dentatrack.Login.Data.Repository
 
-import org.ucb.dentatrack.Login.Data.Mapper.toDomain
 import org.ucb.dentatrack.Login.Domain.Model.User
 import org.ucb.dentatrack.Login.Domain.Repository.LoginRepository
 import org.ucb.dentatrack.Login.Domain.Vo.Email
