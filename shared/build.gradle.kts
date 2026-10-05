@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room3)
 }
 
 kotlin {
@@ -55,8 +56,13 @@ kotlin {
         }
 
         commonMain.dependencies {
+
+            implementation(libs.androidx.room3.runtime)
+            implementation(libs.androidx.sqlite.bundled)
+
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
@@ -86,7 +92,13 @@ kotlin {
         }
     }
 }
-
+room3 {
+    schemaDirectory("$projectDir/schemas")
+}
 dependencies {
     "androidRuntimeClasspath"(libs.compose.uiTooling)
+
+    add("kspAndroid", libs.androidx.room3.compiler)
+    add("kspIosArm64", libs.androidx.room3.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room3.compiler)
 }

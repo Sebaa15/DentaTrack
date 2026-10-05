@@ -25,4 +25,6 @@ sealed class NavRoute {
     data object Catalog : NavRoute()
     @Serializable
     data object Crypto:NavRoute()
+    @Serializable
+    data object ExchangeRate : NavRoute()
 }

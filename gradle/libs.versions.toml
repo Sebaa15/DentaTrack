@@ -1,5 +1,7 @@
 [versions]
-coil='3.6.3'
+room3 = "3.1.0-alpha01"
+sqlite = "2.7.1"
+coil='3.5.0'
 ktor = "3.4.1"
 ksp = "2.3.6"
 kotlinxSerializationJson = "1.8.0"
@@ -22,6 +24,10 @@ material3 = "1.11.0-alpha07"
 detekt = "1.23.8"
 
 [libraries]
+androidx-room3-sqlite-wrapper = { module = "androidx.room3:room3-sqlite-wrapper", version.ref = "room3" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-room3-runtime = { module = "androidx.room3:room3-runtime", version.ref = "room3" }
+androidx-room3-compiler = { module = "androidx.room3:room3-compiler", version.ref = "room3" }
 coil-compose={module="io.coil-kt.coil3:coil-compose", version.ref="coil"}
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
@@ -57,6 +63,7 @@ compose-components-resources = { module = "org.jetbrains.compose.components:comp
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 
 [plugins]
+androidx-room3 = { id = "androidx.room3", version.ref = "room3" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -4,7 +4,7 @@ import org.ucb.dentatrack.Login.Domain.Vo.Email
 import org.ucb.dentatrack.Login.Domain.Vo.Password
 import org.ucb.dentatrack.Login.Domain.Model.User
 
-interface AuthRepository {
+interface LoginRepository {
 
     suspend fun login(
         email: Email,

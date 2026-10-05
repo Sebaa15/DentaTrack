@@ -2,12 +2,12 @@ package org.ucb.dentatrack.Login.Domain.UseCase
 
 import org.ucb.dentatrack.Login.Domain.Model.LoginError
 import org.ucb.dentatrack.Login.Domain.Model.LoginResult
-import org.ucb.dentatrack.Login.Domain.Repository.AuthRepository
+import org.ucb.dentatrack.Login.Domain.Repository.LoginRepository
 import org.ucb.dentatrack.Login.Domain.Vo.Email
 import org.ucb.dentatrack.Login.Domain.Vo.Password
 
 class LoginUseCase(
-    private val repository: AuthRepository
+    private val repository: LoginRepository
 ) {
 
     suspend operator fun invoke(
