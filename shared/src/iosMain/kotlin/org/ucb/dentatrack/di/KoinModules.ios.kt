@@ -1,6 +1,11 @@
 package org.ucb.dentatrack.di
 
-fun initKoinIos()
-{
-    initKoin()
+fun initKoinIos() {
+
+    initKoin {
+
+        modules(
+            iosDatabaseModule
+        )
+    }
 }

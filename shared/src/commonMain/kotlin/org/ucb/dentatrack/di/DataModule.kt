@@ -1,27 +1,65 @@
 package org.ucb.dentatrack.di
 
 import org.koin.dsl.module
-import org.ucb.dentatrack.Login.Data.DataSource.AuthRemoteDataSource
-import org.ucb.dentatrack.Login.Domain.Repository.AuthRepository
-import org.ucb.dentatrack.Register.Data.Repository.FakeRegisterRepository
-import org.ucb.dentatrack.Register.Domain.Repository.RegisterRepository
-import org.ucb.dentatrack.Login.Data.Repository.FakeAuthRepository
-import org.ucb.dentatrack.Login.Data.Service.DentaTrackApiService
-import org.ucb.dentatrack.Odontogram.Data.Repository.FakeOdontogramRepository
+import org.ucb.dentatrack.Login.Data.Repository.LoginRepositoryImpl
+import org.ucb.dentatrack.Login.Domain.Repository.LoginRepository
+import org.ucb.dentatrack.Odontogram.Data.DataSource.OdontogramLocalDataSource
+import org.ucb.dentatrack.Odontogram.Data.DataSource.OdontogramLocalDataSourceImpl
+import org.ucb.dentatrack.Odontogram.Data.Repository.OdontogramRepositoryImpl
 import org.ucb.dentatrack.Odontogram.Domain.Repository.OdontogramRepository
-import org.ucb.dentatrack.Odontogram.Presentation.Viewmodel.OdontogramEvent
+import org.ucb.dentatrack.Register.Data.Repository.RegisterRepositoryImpl
+import org.ucb.dentatrack.Register.Domain.Repository.RegisterRepository
+import org.ucb.dentatrack.User.Data.DataSource.UserLocalDataSource
+import org.ucb.dentatrack.User.Data.DataSource.UserLocalDataSourceImpl
+import org.ucb.dentatrack.database.AppDatabase
 
 val dataModule = module {
-    single<AuthRemoteDataSource> {
-        DentaTrackApiService()
+
+    // USUARIOS LOCAL
+
+    single {
+        get<AppDatabase>()
+            .userDao()
     }
-    single<AuthRepository>{
-        FakeAuthRepository()
+
+    single<UserLocalDataSource> {
+        UserLocalDataSourceImpl(
+            get()
+        )
     }
-    single<RegisterRepository>{
-        FakeRegisterRepository()
+
+    // LOGIN LOCAL
+
+    single<LoginRepository> {
+        LoginRepositoryImpl(
+            get()
+        )
     }
-    single<OdontogramRepository>{
-        FakeOdontogramRepository()
+
+    // REGISTER LOCAL
+
+    single<RegisterRepository> {
+        RegisterRepositoryImpl(
+            get()
+        )
+    }
+
+    // ODONTOGRAM LOCAL
+
+    single {
+        get<AppDatabase>()
+            .toothDao()
+    }
+
+    single<OdontogramLocalDataSource> {
+        OdontogramLocalDataSourceImpl(
+            get()
+        )
+    }
+
+    single<OdontogramRepository> {
+        OdontogramRepositoryImpl(
+            get()
+        )
     }
 }

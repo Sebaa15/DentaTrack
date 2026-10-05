@@ -1,10 +1,12 @@
 package org.ucb.dentatrack.Register.Presentation.VIewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.ucb.dentatrack.Register.Domain.Model.RegisterError
 import org.ucb.dentatrack.Register.Domain.Model.RegisterResult
 import org.ucb.dentatrack.Register.Domain.UseCase.RegisterUseCase
@@ -58,58 +60,71 @@ class RegisterViewModel(
 
     fun register() {
 
-        val currentState = _state.value
+        val currentState =
+            _state.value
 
-        val result = registerUseCase(
-            fullName = currentState.fullName,
-            email = currentState.email,
-            password = currentState.password,
-            confirmPassword = currentState.confirmPassword
-        )
+        viewModelScope.launch {
 
-        when (result) {
+            val result =
+                registerUseCase(
+                    fullName =
+                        currentState.fullName,
 
-            RegisterResult.Success -> {
+                    email =
+                        currentState.email,
 
-                _state.update {
-                    it.copy(
-                        error = null,
-                        isRegistered = true
-                    )
-                }
-            }
+                    password =
+                        currentState.password,
 
-            is RegisterResult.Error -> {
+                    confirmPassword =
+                        currentState.confirmPassword
+                )
 
-                val message = when (result.type) {
+            when (result) {
 
-                    RegisterError.EMPTY_NAME ->
-                        "Ingrese su nombre completo"
+                RegisterResult.Success -> {
 
-                    RegisterError.EMPTY_EMAIL ->
-                        "Ingrese su correo electrónico"
-
-                    RegisterError.INVALID_EMAIL ->
-                        "El correo electrónico no es válido"
-
-                    RegisterError.EMPTY_PASSWORD ->
-                        "Ingrese una contraseña"
-
-                    RegisterError.SHORT_PASSWORD ->
-                        "La contraseña debe tener al menos 6 caracteres"
-
-                    RegisterError.PASSWORDS_DO_NOT_MATCH ->
-                        "Las contraseñas no coinciden"
-
-                    RegisterError.USER_ALREADY_EXISTS ->
-                        "El correo ya se encuentra registrado"
+                    _state.update {
+                        it.copy(
+                            error = null,
+                            isRegistered = true
+                        )
+                    }
                 }
 
-                _state.update {
-                    it.copy(
-                        error = message,
-                        isRegistered = false
-                    )
+                is RegisterResult.Error -> {
+
+                    val message =
+                        when (result.type) {
+
+                            RegisterError.EMPTY_NAME ->
+                                "Ingrese su nombre completo"
+
+                            RegisterError.EMPTY_EMAIL ->
+                                "Ingrese su correo electrónico"
+
+                            RegisterError.INVALID_EMAIL ->
+                                "El correo electrónico no es válido"
+
+                            RegisterError.EMPTY_PASSWORD ->
+                                "Ingrese una contraseña"
+
+                            RegisterError.SHORT_PASSWORD ->
+                                "La contraseña debe tener al menos 6 caracteres"
+
+                            RegisterError.PASSWORDS_DO_NOT_MATCH ->
+                                "Las contraseñas no coinciden"
+
+                            RegisterError.USER_ALREADY_EXISTS ->
+                                "El correo ya se encuentra registrado"
+                        }
+
+                    _state.update {
+                        it.copy(
+                            error = message,
+                            isRegistered = false
+                        )
+                    }
                 }
             }
         }

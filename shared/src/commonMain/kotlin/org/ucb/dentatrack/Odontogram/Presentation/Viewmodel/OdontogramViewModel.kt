@@ -38,10 +38,25 @@ class OdontogramViewModel(private val getOdontogramUseCase: GetOdontogramUseCase
             }
         }
     }
-    private fun loadOdontogram(){
-        val teeth=getOdontogramUseCase()
-        _state.update{
-            it.copy(teeth=teeth,isLoading=false)
+    private fun loadOdontogram() {
+
+        viewModelScope.launch {
+
+            _state.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+
+            val teeth =
+                getOdontogramUseCase()
+
+            _state.update {
+                it.copy(
+                    teeth = teeth,
+                    isLoading = false
+                )
+            }
         }
     }
     private fun emitEffect(

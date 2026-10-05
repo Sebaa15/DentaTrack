@@ -9,7 +9,6 @@ import org.ucb.dentatrack.Register.Domain.UseCase.RegisterUseCase
 val domainModule = module {
 
     singleOf(::LoginUseCase)
-
     singleOf(::RegisterUseCase)
     singleOf(::GetOdontogramUseCase)
 
