@@ -17,7 +17,6 @@ class LoginApiService :
     LoginRemoteDataSource {
 
     private val client = HttpClient {
-
         install(ContentNegotiation) {
 
             json(

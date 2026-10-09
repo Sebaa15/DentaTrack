@@ -5,7 +5,10 @@ import org.ucb.dentatrack.Login.Data.Repository.LoginRepositoryImpl
 import org.ucb.dentatrack.Login.Domain.Repository.LoginRepository
 import org.ucb.dentatrack.Odontogram.Data.DataSource.OdontogramLocalDataSource
 import org.ucb.dentatrack.Odontogram.Data.DataSource.OdontogramLocalDataSourceImpl
+import org.ucb.dentatrack.Odontogram.Data.DataSource.OdontogramRealtimeDataSource
+import org.ucb.dentatrack.Odontogram.Data.Repository.OdontogramRealtimeRepositoryImpl
 import org.ucb.dentatrack.Odontogram.Data.Repository.OdontogramRepositoryImpl
+import org.ucb.dentatrack.Odontogram.Domain.Repository.OdontogramRealtimeRepository
 import org.ucb.dentatrack.Odontogram.Domain.Repository.OdontogramRepository
 import org.ucb.dentatrack.Register.Data.Repository.RegisterRepositoryImpl
 import org.ucb.dentatrack.Register.Domain.Repository.RegisterRepository
@@ -15,7 +18,6 @@ import org.ucb.dentatrack.database.AppDatabase
 
 val dataModule = module {
 
-    // USUARIOS LOCAL
 
     single {
         get<AppDatabase>()
@@ -36,7 +38,6 @@ val dataModule = module {
         )
     }
 
-    // REGISTER LOCAL
 
     single<RegisterRepository> {
         RegisterRepositoryImpl(
@@ -44,7 +45,6 @@ val dataModule = module {
         )
     }
 
-    // ODONTOGRAM LOCAL
 
     single {
         get<AppDatabase>()
@@ -59,6 +59,15 @@ val dataModule = module {
 
     single<OdontogramRepository> {
         OdontogramRepositoryImpl(
+            get()
+        )
+    }
+    single {
+        OdontogramRealtimeDataSource()
+    }
+
+    single<OdontogramRealtimeRepository> {
+        OdontogramRealtimeRepositoryImpl(
             get()
         )
     }

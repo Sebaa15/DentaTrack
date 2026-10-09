@@ -17,3 +17,12 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+# Firebase
+androidApp/google-services.json
+
+# Por si después agregamos Firebase en iOS
+iosApp/GoogleService-Info.plist
+
+# Nunca subir credenciales administrativas
+**/serviceAccount*.json
+**/*service-account*.json

@@ -9,9 +9,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.ucb.dentatrack.Odontogram.Domain.UseCase.GetOdontogramUseCase
+import org.ucb.dentatrack.Odontogram.Domain.UseCase.ObserveOdontogramRealtimeUseCase
 
 
-class OdontogramViewModel(private val getOdontogramUseCase: GetOdontogramUseCase): ViewModel()
+class OdontogramViewModel(private val getOdontogramUseCase: GetOdontogramUseCase,
+    private val observeRealtimeUseCase: ObserveOdontogramRealtimeUseCase): ViewModel()
 {
     private val _state=MutableStateFlow(OdontogramState())
     val state=_state.asStateFlow()
@@ -65,4 +67,21 @@ class OdontogramViewModel(private val getOdontogramUseCase: GetOdontogramUseCase
         viewModelScope.launch{
             _effect.emit(effect)
         }
+    private fun observeRealtime() {
+
+        viewModelScope.launch {
+
+            observeRealtimeUseCase()
+                .collect { message ->
+
+                    _state.update {
+                        it.copy(
+                            realtimeMessage =
+                                message
+                                    ?: "Sin datos"
+                        )
+                    }
+                }
+        }
+    }
 }

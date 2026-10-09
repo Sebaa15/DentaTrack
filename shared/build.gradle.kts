@@ -29,7 +29,7 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
+            jvmTarget = JvmTarget.JVM_17
         }
 
         androidResources {
@@ -56,6 +56,7 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(libs.firebase.database)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)

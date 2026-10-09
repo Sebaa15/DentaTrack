@@ -70,6 +70,9 @@ fun OdontogramContent(state: OdontogramState,onToothSelected: (Int)-> Unit) {
                 Text(text="Tratamiento: ${treatment}")
             }
         }
+        Text(
+            text = state.realtimeMessage
+        )
     }
 }
 

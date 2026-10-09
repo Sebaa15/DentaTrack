@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -11,12 +12,14 @@ kotlin {
     }
 }
 dependencies {
+
     implementation(project(":shared"))
 
     implementation(libs.androidx.activity.compose)
-
     implementation(libs.compose.uiToolingPreview)
-    debugImplementation(libs.compose.uiTooling)
+    debugImplementation(
+        libs.compose.uiTooling
+    )
 }
 
 android {

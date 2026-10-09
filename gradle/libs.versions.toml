@@ -1,4 +1,6 @@
 [versions]
+firebaseDatabase = "2.7.0"
+googleServices = "4.5.0"
 room3 = "3.1.0-alpha01"
 sqlite = "2.7.1"
 ktor = "3.4.1"
@@ -23,6 +25,7 @@ material3 = "1.11.0-alpha07"
 detekt = "1.23.8"
 
 [libraries]
+firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "firebaseDatabase" }
 androidx-room3-runtime = { module = "androidx.room3:room3-runtime", version.ref = "room3" }
 androidx-room3-compiler = { module = "androidx.room3:room3-compiler", version.ref = "room3" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
@@ -59,6 +62,7 @@ compose-components-resources = { module = "org.jetbrains.compose.components:comp
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 
 [plugins]
+googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 androidx-room3 = { id = "androidx.room3", version.ref = "room3" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
