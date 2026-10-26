@@ -10,7 +10,7 @@ import org.ucb.dentatrack.Settings.Data.SettingsRepository
 import org.ucb.dentatrack.navigation.AppNavHost
 
 @Composable
-fun App() {
+fun App(notificationMessageId: String? = null) {
     val repository = remember { SettingsRepository() }
 
     var themeMode by remember {
@@ -23,6 +23,7 @@ fun App() {
             color = MaterialTheme.colorScheme.background
         ) {
             AppNavHost(
+                notificationMessageId = notificationMessageId,
                 themeMode = themeMode,
                 onThemeChange = {
                     themeMode = it

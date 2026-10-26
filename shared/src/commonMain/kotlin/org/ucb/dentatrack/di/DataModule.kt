@@ -79,4 +79,7 @@ val dataModule = module {
     single {
         OdontogramFirestoreDataSource()
     }
+    single {
+        get<AppDatabase>().notificationDao()
+    }
 }

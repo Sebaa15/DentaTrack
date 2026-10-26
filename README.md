@@ -29,3 +29,38 @@ Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+## Examen de Desarrollo Móvil — TP2
+
+**Integrante:** Guery Sebastian Flores  
+**Ejercicio seleccionado:** E100-4 — Sistema de notificaciones inteligente  
+**Puntaje:** 100 puntos
+
+### Tecnologías utilizadas
+
+- Firebase Cloud Messaging (FCM)
+- Firebase Remote Config
+- Cloud Firestore
+- Room
+- WorkManager
+- Android NotificationManager
+- Kotlin Multiplatform y Compose
+
+### Funcionalidad
+
+La aplicación recibe notificaciones push, consulta las preferencias de Remote Config y registra las notificaciones en Room. Durante el horario silencioso, los mensajes procesados por el servicio se almacenan sin mostrarse. WorkManager revisa periódicamente los mensajes pendientes.
+
+El usuario puede consultar el historial y abrir el detalle al seleccionar una notificación.
+
+### Ejecución
+
+1. Abrir DentaTrack en Android Studio.
+2. Verificar la configuración de Firebase.
+3. Ejecutar la aplicación en un dispositivo Android.
+4. Iniciar sesión y verificar el token FCM en Firestore.
+5. Enviar una notificación desde Firebase o mediante la API FCM.
+6. Comprobar el historial y la navegación al detalle.
+
+### Consideraciones
+
+Para aplicar las preferencias de horario silencioso a mensajes recibidos en segundo plano, se utilizan mensajes FCM de tipo data-only. La ejecución periódica de WorkManager depende de las condiciones del sistema Android.

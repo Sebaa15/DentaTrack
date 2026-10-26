@@ -1,14 +1,9 @@
-
 package org.ucb.dentatrack.Notifications
 
-import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
+import kotlinx.coroutines.runBlocking
+import org.ucb.dentatrack.Notifications.Data.Dao.NotificationDao
+import org.ucb.dentatrack.Notifications.Data.Entity.NotificationEntity
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +23,9 @@ class DentaTrackMessagingService :
 
     private val serviceScope = CoroutineScope(
         SupervisorJob() + Dispatchers.IO
+
     )
+    private val notificationDao: NotificationDao by inject()
 
     // Firebase genera o renueva el token
     override fun onNewToken(token: String) {
@@ -55,70 +52,54 @@ class DentaTrackMessagingService :
     }
 
     // Recepción de notificaciones
-    override fun onMessageReceived(
-        message: RemoteMessage
-    ) {
+    override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val title = message.notification?.title
-            ?: message.data["title"]
-            ?: "DentaTrack"
+        val id = message.data["message_id"]
+            ?: message.messageId
+            ?: System.currentTimeMillis().toString()
 
-        val body = message.notification?.body
-            ?: message.data["body"]
+        val title = message.data["title"]
+            ?: message.notification?.title
+            ?: "Notificación"
+
+        val body = message.data["body"]
+            ?: message.notification?.body
             ?: return
 
-        Log.d(TAG, "Notificación recibida")
+        runBlocking(Dispatchers.IO) {
 
-        showNotification(title, body)
-    }
+            if (notificationDao.findById(id) != null) {
+                return@runBlocking
+            }
 
-    private fun showNotification(
-        title: String,
-        body: String
-    ) {
-        if (
-            Build.VERSION.SDK_INT >=
-            Build.VERSION_CODES.TIRAMISU &&
-            checkSelfPermission(
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.w(TAG, "Permiso de notificaciones denegado")
-            return
-        }
-
-        val manager = getSystemService(
-            Context.NOTIFICATION_SERVICE
-        ) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Notificaciones DentaTrack",
-                NotificationManager.IMPORTANCE_DEFAULT
+            val notification = NotificationEntity(
+                messageId = id,
+                title = title,
+                body = body,
+                receivedAt = System.currentTimeMillis()
             )
 
-            manager.createNotificationChannel(channel)
+            notificationDao.save(notification)
+
+            if (NotificationPreferences.canShow(
+                    notificationDao.lastDisplayedAt()
+                )
+            ) {
+                if (NotificationHelper.show(
+                        this@DentaTrackMessagingService,
+                        notification
+                    )
+                ) {
+                    notificationDao.markDisplayed(
+                        id,
+                        System.currentTimeMillis()
+                    )
+                }
+            }
         }
-
-        val notification = NotificationCompat.Builder(
-            this,
-            CHANNEL_ID
-        )
-            .setSmallIcon(
-                android.R.drawable.ic_dialog_info
-            )
-            .setContentTitle(title)
-            .setContentText(body)
-            .setAutoCancel(true)
-            .build()
-
-        manager.notify(
-            System.currentTimeMillis().toInt(),
-            notification
-        )
     }
+
 
     companion object {
         private const val TAG = "DentaTrackFCM"

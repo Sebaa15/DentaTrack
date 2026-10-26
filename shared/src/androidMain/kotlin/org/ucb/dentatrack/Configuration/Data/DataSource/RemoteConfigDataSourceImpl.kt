@@ -34,7 +34,6 @@ class RemoteConfigDataSourceImpl :
                 }
 
                 config.setDefaults(
-
                     "odontogram_title" to
                             "MI ODONTOGRAMA",
 
@@ -54,11 +53,12 @@ class RemoteConfigDataSourceImpl :
                             1L,
 
                     "latest_version" to
-                            "1.0.0"
+                            "1.0.0",
+                    "notif_enabled" to true,
+                    "notif_silent_hours" to "22:00-07:00",
+                    "notif_frequency" to 1L
                 )
-
                 config.fetchAndActivate()
-
                 trySend(
                     readConfig()
                 )
@@ -102,7 +102,9 @@ class RemoteConfigDataSourceImpl :
             AppRemoteConfig {
 
         return AppRemoteConfig(
-
+            notifEnabled = config["notif_enabled"],
+            notifSilentHours = config["notif_silent_hours"],
+            notifFrequency = config["notif_frequency"],
             odontogramTitle =
                 config["odontogram_title"],
 
@@ -122,7 +124,7 @@ class RemoteConfigDataSourceImpl :
                 config["minimum_supported_version"],
 
             latestVersion =
-                config["latest_version"]
+                config["latest_version"],
         )
     }
 }

@@ -21,5 +21,8 @@ data class AppRemoteConfig(
     Long = 1,
 
     val latestVersion:
-    String = "1.0.0"
+    String = "1.0.0",
+    val notifEnabled: Boolean = true,
+    val notifSilentHours: String = "22:00-07:00",
+    val notifFrequency: Long = 1L
 )

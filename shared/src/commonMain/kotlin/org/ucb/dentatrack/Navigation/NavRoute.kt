@@ -25,4 +25,12 @@ sealed class NavRoute {
     data object Profile : NavRoute()
     @Serializable
     data object Settings : NavRoute()
+
+    @Serializable
+    data object NotificationHistory : NavRoute()
+
+    @Serializable
+    data class NotificationDetail(
+        val messageId: String
+    ) : NavRoute()
 }

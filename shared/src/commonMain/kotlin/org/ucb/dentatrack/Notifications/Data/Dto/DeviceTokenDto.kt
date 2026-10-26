@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DeviceTokenDto(
     val userId: String = "",
-    val token: String = ""
+    val token: String = "",
+    val updatedAt: Long = 0L
 )

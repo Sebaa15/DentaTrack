@@ -1,5 +1,9 @@
 package org.ucb.dentatrack
 
+import android.content.Intent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -11,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
 class MainActivity : ComponentActivity() {
+    private var notificationMessageId by
+    mutableStateOf<String?>(null)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -33,9 +39,17 @@ class MainActivity : ComponentActivity() {
                 100
             )
         }
+        notificationMessageId = intent?.getStringExtra("message_id")
         setContent {
-            App()
+            App(notificationMessageId = notificationMessageId)
         }
+    }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+
+        notificationMessageId =
+            intent.getStringExtra("message_id")
     }
 }
 

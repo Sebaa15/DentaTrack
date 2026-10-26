@@ -36,7 +36,8 @@ fun OdontogramContent(state: OdontogramState,
                       onToothSelected: (Int)-> Unit,
                       onLogout: () -> Unit,onSync: () -> Unit,
                       onRestore: () -> Unit,
-                      onSettings: () -> Unit) {
+                      onSettings: () -> Unit,
+                      onNotifications: () -> Unit) {
     val scrollState= rememberScrollState()
     Column(
         modifier= Modifier.fillMaxSize().verticalScroll(scrollState).
@@ -101,6 +102,9 @@ fun OdontogramContent(state: OdontogramState,
         }
         Button(onClick = onSettings) {
             Text("Accesibilidad")
+        }
+        Button(onClick = onNotifications) {
+            Text("Historial de notificaciones")
         }
         Button(
             onClick = onLogout

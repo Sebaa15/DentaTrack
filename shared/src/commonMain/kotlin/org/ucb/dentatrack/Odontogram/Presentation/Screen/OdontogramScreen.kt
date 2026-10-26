@@ -74,6 +74,9 @@ fun OdontogramScreen(
                 OdontogramEvent.RestoreClicked
             )
         },
-        onSettings = onOpenSettings
+        onSettings = onOpenSettings,
+        onNotifications = {
+            navController.navigate(NavRoute.NotificationHistory)
+        }
     )
 }
