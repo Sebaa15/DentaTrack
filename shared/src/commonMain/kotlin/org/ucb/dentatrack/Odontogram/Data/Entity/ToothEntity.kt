@@ -1,17 +1,14 @@
 package org.ucb.dentatrack.Odontogram.Data.Entity
 
 import androidx.room3.Entity
-import androidx.room3.PrimaryKey
 
 @Entity(
-    tableName = "teeth"
+    tableName = "teeth",
+    primaryKeys = ["userId", "number"]
 )
 data class ToothEntity(
-
-    @PrimaryKey
+    val userId: Int,
     val number: Int,
-
     val status: String,
-
     val treatment: String? = null
 )

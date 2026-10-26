@@ -24,7 +24,9 @@ class LoginRepositoryImpl(
             )
 
         return if (user != null) {
-
+            localDataSource.setLoggedIn(
+                user.id
+            )
             Result.success(
                 user.toDomain()
             )
@@ -37,5 +39,15 @@ class LoginRepositoryImpl(
                 )
             )
         }
+    }
+    override suspend fun logout() {
+        localDataSource.logout()
+    }
+    override suspend fun getCurrentUser():
+            User? {
+
+        return localDataSource
+            .getCurrentUser()
+            ?.toDomain()
     }
 }

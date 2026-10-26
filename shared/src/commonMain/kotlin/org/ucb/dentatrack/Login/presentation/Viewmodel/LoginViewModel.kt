@@ -11,9 +11,14 @@ import kotlinx.coroutines.launch
 import org.ucb.dentatrack.Login.Domain.Model.LoginError
 import org.ucb.dentatrack.Login.Domain.Model.LoginResult
 import org.ucb.dentatrack.Login.Domain.UseCase.LoginUseCase
+import org.ucb.dentatrack.Notifications.Domain.UseCase.RegisterDeviceTokenUseCase
+import org.ucb.dentatrack.sheduler.OdontogramWorkScheduler
 
 class LoginViewModel(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val registerDeviceTokenUseCase:
+    RegisterDeviceTokenUseCase,
+    private val workScheduler: OdontogramWorkScheduler
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -55,10 +60,26 @@ class LoginViewModel(
             )
             when(result){
                 is LoginResult.Success -> {
+
                     _state.update {
-                        it.copy(error=null)
+                        it.copy(
+                            error = null
+                        )
                     }
-                    emitEffect(LoginEffect.NavigateToOdontogram)
+
+                    runCatching {
+
+                        registerDeviceTokenUseCase(
+                            result.user.id
+                        )
+                    }
+                    workScheduler.schedule(result.user.id)
+                    emitEffect(
+                        LoginEffect.NavigateToOdontogram(
+                            userId =
+                                result.user.id
+                        )
+                    )
                 }
                 is LoginResult.Error -> {
                     _state.update {

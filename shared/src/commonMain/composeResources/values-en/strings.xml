@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Loco xml export: Android strings
+ Project: DentaTrack
+ Locale: en, English
+ Exported by: Guery Flores
+ Exported at: Thu, 22 Oct 2026 16:14:31 -0400
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="login_button">Log in</string>
+    <string name="register_button">Register</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="odontogram_title">My odontogram</string>
+    <string name="logout_button">Log out</string>
+</resources>

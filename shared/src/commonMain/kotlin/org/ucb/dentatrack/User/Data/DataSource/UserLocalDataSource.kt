@@ -14,4 +14,9 @@ interface UserLocalDataSource {
         email: String,
         password: String
     ): Boolean
+    suspend fun setLoggedIn(userId: Int)
+
+    suspend fun getCurrentUser(): UserEntity?
+
+    suspend fun logout()
 }

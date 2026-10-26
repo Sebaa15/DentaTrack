@@ -1,5 +1,7 @@
 package org.ucb.dentatrack.Register.Presentation.Composable
 
+import edu.ucb.ds.components.fields.MainTextField
+import edu.ucb.ds.components.buttons.MainButton
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -57,69 +59,43 @@ fun RegisterContent(
             modifier = Modifier.height(24.dp)
         )
 
-        OutlinedTextField(
+        MainTextField(
             value = state.fullName,
             onValueChange = onFullNameChanged,
-            label = {
-                Text("Nombre completo")
-            },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            label = "Nombre completo"
         )
 
         Spacer(
             modifier = Modifier.height(12.dp)
         )
 
-        OutlinedTextField(
+        MainTextField(
             value = state.email,
             onValueChange = onEmailChanged,
-            label = {
-                Text("Correo electrónico")
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email
-            ),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            label = "Correo electrónico",
+            keyboardType = KeyboardType.Email
         )
 
         Spacer(
             modifier = Modifier.height(12.dp)
         )
 
-        OutlinedTextField(
+        MainTextField(
             value = state.password,
             onValueChange = onPasswordChanged,
-            label = {
-                Text("Contraseña")
-            },
-            visualTransformation =
-                PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            label = "Contraseña",
+            isPassword = true
         )
 
         Spacer(
             modifier = Modifier.height(12.dp)
         )
 
-        OutlinedTextField(
+        MainTextField(
             value = state.confirmPassword,
             onValueChange = onConfirmPasswordChanged,
-            label = {
-                Text("Confirmar contraseña")
-            },
-            visualTransformation =
-                PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            label = "Confirmar contraseña",
+            isPassword = true
         )
 
         state.error?.let { error ->
@@ -138,12 +114,10 @@ fun RegisterContent(
             modifier = Modifier.height(24.dp)
         )
 
-        Button(
-            onClick = onRegisterClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Crear cuenta")
-        }
+        MainButton(
+            text = "Crear cuenta",
+            onClick = onRegisterClick
+        )
         Spacer(
             modifier = Modifier.height(8.dp)
         )

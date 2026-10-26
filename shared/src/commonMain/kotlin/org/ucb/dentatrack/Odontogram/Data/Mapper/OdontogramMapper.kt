@@ -14,13 +14,3 @@ fun ToothEntity.toDomain():
         treatment = treatment
     )
 }
-
-fun Tooth.toEntity():
-        ToothEntity {
-
-    return ToothEntity(
-        number = number,
-        status = status.name,
-        treatment = treatment
-    )
-}

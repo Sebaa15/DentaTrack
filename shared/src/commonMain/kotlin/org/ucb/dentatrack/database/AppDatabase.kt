@@ -7,8 +7,6 @@ import androidx.room3.RoomDatabaseConstructor
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import org.ucb.dentatrack.Login.Data.Dao.LoggedUserDao
-import org.ucb.dentatrack.Login.Data.Entity.LoggedUserEntity
 import org.ucb.dentatrack.Odontogram.Data.Dao.ToothDao
 import org.ucb.dentatrack.Odontogram.Data.Entity.ToothEntity
 import org.ucb.dentatrack.User.Data.Dao.UserDao
@@ -19,7 +17,7 @@ import org.ucb.dentatrack.User.Data.Entity.UserEntity
         UserEntity::class,
         ToothEntity::class
     ],
-    version = 1
+    version = 3
 )
 @ConstructedBy(
     AppDatabaseConstructor::class
@@ -45,16 +43,12 @@ expect object AppDatabaseConstructor :
 }
 
 fun getRoomDatabase(
-    builder:
-    RoomDatabase.Builder<AppDatabase>
+    builder: RoomDatabase.Builder<AppDatabase>
 ): AppDatabase {
 
     return builder
-        .setDriver(
-            BundledSQLiteDriver()
-        )
-        .setQueryCoroutineContext(
-            Dispatchers.IO
-        )
+        .addMigrations(MIGRATION_1_2,MIGRATION_2_3)
+        .setDriver(BundledSQLiteDriver())
+        .setQueryCoroutineContext(Dispatchers.IO)
         .build()
 }

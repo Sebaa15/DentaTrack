@@ -9,6 +9,20 @@ import org.ucb.dentatrack.User.Data.Entity.UserEntity
 @Dao
 interface UserDao {
 
+    @Query("UPDATE users SET isLoggedIn = 0")
+    suspend fun clearSession()
+
+    @Query(
+        "UPDATE users SET isLoggedIn = 1 WHERE id = :userId"
+    )
+    suspend fun setLoggedIn(
+        userId: Int
+    )
+
+    @Query(
+        "SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1"
+    )
+    suspend fun getCurrentUser(): UserEntity?
     @Query(
         """
         SELECT * FROM users

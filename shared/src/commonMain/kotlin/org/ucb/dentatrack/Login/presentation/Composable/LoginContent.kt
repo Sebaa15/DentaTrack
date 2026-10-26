@@ -1,5 +1,9 @@
 package org.ucb.dentatrack.Login.presentation.Composable
 
+import edu.ucb.ds.components.fields.MainTextField
+import androidx.compose.ui.text.input.KeyboardType
+import org.jetbrains.compose.resources.stringResource
+import edu.ucb.ds.components.buttons.MainButton
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,15 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.ucb.dentatrack.Login.presentation.Viewmodel.LoginEvent
 import androidx.compose.material3.TextButton
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import dentatrack.shared.generated.resources.Res
+import dentatrack.shared.generated.resources.login_button
 import org.ucb.dentatrack.Login.presentation.Viewmodel.LoginState
 
 @Composable
 fun LoginContent(
     state: LoginState,
     onRegisterClick: () -> Unit,
-    onEvent: (LoginEvent) -> Unit
+    onEvent: (LoginEvent) -> Unit,
+    onSettings: () -> Unit
 ) {
 
     Column(
@@ -54,40 +60,26 @@ fun LoginContent(
             modifier = Modifier.height(32.dp)
         )
 
-        OutlinedTextField(
+        MainTextField(
             value = state.email,
-            onValueChange = { email ->
-                onEvent(
-                    LoginEvent.EmailChanged(email)
-                )
+            onValueChange = {
+                onEvent(LoginEvent.EmailChanged(it))
             },
-            label = {
-                Text("Correo electrónico")
-            },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            label = "Correo electrónico",
+            keyboardType = KeyboardType.Email
         )
 
         Spacer(
             modifier = Modifier.height(16.dp)
         )
 
-        OutlinedTextField(
+        MainTextField(
             value = state.password,
-            onValueChange = { password ->
-                onEvent(
-                    LoginEvent.PasswordChanged(password)
-                )
+            onValueChange = {
+                onEvent(LoginEvent.PasswordChanged(it))
             },
-            label = {
-                Text("Contraseña")
-            },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            label = "Contraseña",
+            isPassword = true
         )
 
         if (state.error != null) {
@@ -105,16 +97,14 @@ fun LoginContent(
             modifier = Modifier.height(24.dp)
         )
 
-        Button(
+        MainButton(
+            text = stringResource(
+                Res.string.login_button
+            ),
             onClick = {
-                onEvent(
-                    LoginEvent.LoginClicked
-                )
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Iniciar sesión")
-        }
+                onEvent(LoginEvent.LoginClicked)
+            }
+        )
         Spacer(
             modifier = Modifier.height(8.dp)
         )
@@ -123,6 +113,9 @@ fun LoginContent(
             onClick = onRegisterClick
         ) {
             Text("Crear cuenta")
+        }
+        TextButton(onClick = onSettings) {
+            Text("Accesibilidad")
         }
     }
 }

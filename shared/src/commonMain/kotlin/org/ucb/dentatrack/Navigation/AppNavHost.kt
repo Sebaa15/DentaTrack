@@ -1,5 +1,7 @@
 package org.ucb.dentatrack.navigation
 
+import edu.ucb.ds.theme.ThemeMode
+import org.ucb.dentatrack.Settings.Presentation.SettingsScreen
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -11,7 +13,10 @@ import org.ucb.dentatrack.Odontogram.Presentation.Screen.OdontogramScreen
 import org.ucb.dentatrack.Register.Presentation.Screen.RegisterScreen
 
 @Composable
-fun AppNavHost() {
+fun AppNavHost(
+    themeMode: ThemeMode,
+    onThemeChange: (ThemeMode) -> Unit
+) {
 
     val navController = rememberNavController()
 
@@ -23,7 +28,10 @@ fun AppNavHost() {
         composable<NavRoute.Login> {
 
             LoginScreen(
-               navController= navController)
+               navController= navController,
+                onOpenSettings = {
+                    navController.navigate(NavRoute.Settings)
+                })
         }
 
         composable<NavRoute.Register> {
@@ -40,8 +48,18 @@ fun AppNavHost() {
             )
         }
         composable<NavRoute.Odontogram> {
+                backStackEntry ->
+
+            val route =
+                backStackEntry
+                    .toRoute<NavRoute.Odontogram>()
+
             OdontogramScreen(
-                navController= navController
+                navController = navController,
+                userId = route.userId,
+                onOpenSettings = {
+                    navController.navigate(NavRoute.Settings)
+                }
             )
         }
         composable<NavRoute.TreatmentDetail> { backStackEntry ->
@@ -52,6 +70,15 @@ fun AppNavHost() {
 
             Text(
                 text = "Detalle de la pieza ${route.toothNumber}"
+            )
+        }
+        composable<NavRoute.Settings> {
+            SettingsScreen(
+                themeMode = themeMode,
+                onThemeChange = onThemeChange,
+                onBack = {
+                    navController.popBackStack()
+                }
             )
         }
     }

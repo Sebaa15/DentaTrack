@@ -1,5 +1,9 @@
 package org.ucb.dentatrack.Odontogram.Presentation.Composable
 
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.layout.heightIn
+import edu.ucb.ds.components.cards.MainCard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -8,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,20 +23,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dentatrack.shared.generated.resources.Res
+import dentatrack.shared.generated.resources.logout_button
+import org.jetbrains.compose.resources.stringResource
 import org.ucb.dentatrack.Odontogram.Domain.Model.Tooth
 import org.ucb.dentatrack.Odontogram.Domain.Model.ToothStatus
 import org.ucb.dentatrack.Odontogram.Presentation.Viewmodel.OdontogramState
 
 
 @Composable
-fun OdontogramContent(state: OdontogramState,onToothSelected: (Int)-> Unit) {
+fun OdontogramContent(state: OdontogramState,
+                      onToothSelected: (Int)-> Unit,
+                      onLogout: () -> Unit,onSync: () -> Unit,
+                      onRestore: () -> Unit,
+                      onSettings: () -> Unit) {
     val scrollState= rememberScrollState()
     Column(
         modifier= Modifier.fillMaxSize().verticalScroll(scrollState).
         padding(16.dp)
     ){
         Text(
-            text="MI ODONTOGRAMA",
+            text=state.title,
             style=MaterialTheme.typography.headlineMedium
         )
         Spacer(
@@ -70,17 +81,50 @@ fun OdontogramContent(state: OdontogramState,onToothSelected: (Int)-> Unit) {
                 Text(text="Tratamiento: ${treatment}")
             }
         }
-        Text(
-            text = state.realtimeMessage
-        )
+        Button(
+            onClick = onSync,
+            enabled = !state.isSyncing
+        ) {
+            Text(
+                if (state.isSyncing) "Sincronizando..."
+                else "Subir a Firestore (prueba)"
+            )
+        }
+        Button(
+            onClick = onRestore,
+            enabled = !state.isSyncing
+        ) {
+            Text("Recuperar desde Firestore")
+        }
+        state.syncMessage?.let { mensaje ->
+            Text(text = mensaje)
+        }
+        Button(onClick = onSettings) {
+            Text("Accesibilidad")
+        }
+        Button(
+            onClick = onLogout
+        ) {
+            Text(
+                text = stringResource(
+                    Res.string.logout_button
+                )
+            )
+        }
     }
 }
 
 @Composable
 private fun ToothCard(tooth: Tooth,onClick:()->Unit){
-    Card(
-        onClick=onClick,
-        modifier=Modifier.height(78.dp)
+    MainCard(
+        onClick = onClick,
+        modifier = Modifier
+            .heightIn(min = 88.dp)
+            .semantics(mergeDescendants = true) {
+                contentDescription =
+                    "Pieza ${tooth.number}, " +
+                            "${getStatusText(tooth.status)}. Abrir detalle"
+            }
     ){
         Column(
             modifier=Modifier.fillMaxSize().padding(8.dp),

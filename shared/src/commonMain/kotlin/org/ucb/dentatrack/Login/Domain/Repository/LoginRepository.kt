@@ -9,4 +9,6 @@ interface LoginRepository {
         email: Email,
         password: Password
     ): Result<User>
+    suspend fun logout()
+    suspend fun getCurrentUser(): User?
 }

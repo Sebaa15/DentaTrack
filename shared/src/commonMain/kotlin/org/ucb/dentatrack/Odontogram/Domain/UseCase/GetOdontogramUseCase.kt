@@ -6,7 +6,7 @@ import org.ucb.dentatrack.Odontogram.Domain.Repository.OdontogramRepository
 class GetOdontogramUseCase(
     private val repository: OdontogramRepository
 ){
-    suspend operator fun invoke():List<Tooth>{
-        return repository.getTeeth()
+    suspend operator fun invoke(userId: String): List<Tooth> {
+        return repository.getTeeth(userId)
     }
 }

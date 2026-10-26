@@ -36,4 +36,18 @@ class UserLocalDataSourceImpl(
 
         return result != -1L
     }
+    override suspend fun setLoggedIn(
+        userId: Int
+    ) {
+        dao.clearSession()
+        dao.setLoggedIn(userId)
+    }
+
+    override suspend fun getCurrentUser(): UserEntity? {
+        return dao.getCurrentUser()
+    }
+
+    override suspend fun logout() {
+        dao.clearSession()
+    }
 }

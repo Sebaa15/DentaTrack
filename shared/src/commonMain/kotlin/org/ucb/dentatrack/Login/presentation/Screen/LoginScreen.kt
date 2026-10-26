@@ -14,16 +14,22 @@ import org.ucb.dentatrack.navigation.NavRoute
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    viewModel: LoginViewModel = koinViewModel()
+    viewModel: LoginViewModel = koinViewModel(),
+    onOpenSettings: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit,) {
 
         viewModel.effect.collect { effect ->
             when (effect) {
-                is LoginEffect.NavigateToOdontogram ->
-                    navController.navigate(NavRoute.Odontogram)
+                is LoginEffect.NavigateToOdontogram -> {
 
+                    navController.navigate(
+                        NavRoute.Odontogram(
+                            userId = effect.userId
+                        )
+                    )
+                }
                 is LoginEffect.ShowMessage -> {
                     // Luego conectaremos Snackbar o Toast
                 }
@@ -36,6 +42,7 @@ fun LoginScreen(
         onRegisterClick = {
             navController.navigate(
                 NavRoute.Register)
-        }
+        },
+        onSettings = onOpenSettings
     )
 }
