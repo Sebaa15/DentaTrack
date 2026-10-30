@@ -71,4 +71,22 @@ class OdontogramRepositoryImpl(
             insertedCount = insertados
         )
     }
+    override suspend fun saveTooth(
+        userId: String,
+        tooth: Tooth
+    ) {
+        val localId = userId.toIntOrNull()
+            ?: error("ID de usuario inválido")
+
+        val entity = ToothEntity(
+            userId = localId,
+            number = tooth.number,
+            status = tooth.status.name,
+            treatment = tooth.treatment
+        )
+
+        localDataSource.saveTeeth(
+            listOf(entity)
+        )
+    }
 }

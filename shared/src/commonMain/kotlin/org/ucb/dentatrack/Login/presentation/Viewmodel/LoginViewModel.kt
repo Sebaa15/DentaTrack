@@ -75,9 +75,8 @@ class LoginViewModel(
                     }
                     workScheduler.schedule(result.user.id)
                     emitEffect(
-                        LoginEffect.NavigateToOdontogram(
-                            userId =
-                                result.user.id
+                        LoginEffect.NavigateToHome(
+                            userId = result.user.id
                         )
                     )
                 }

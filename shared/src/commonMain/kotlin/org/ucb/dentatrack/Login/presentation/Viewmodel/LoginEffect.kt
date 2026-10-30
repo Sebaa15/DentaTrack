@@ -2,7 +2,7 @@ package org.ucb.dentatrack.Login.presentation.Viewmodel
 
 sealed interface LoginEffect {
 
-    data class NavigateToOdontogram(
+    data class NavigateToHome(
         val userId: String
     ) : LoginEffect
 

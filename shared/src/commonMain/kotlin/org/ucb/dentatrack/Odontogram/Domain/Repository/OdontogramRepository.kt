@@ -8,6 +8,10 @@ interface OdontogramRepository{
     suspend fun descargarOdontogramaDePrueba(
         userId: String
     ): RestoreSummary
+    suspend fun saveTooth(
+        userId: String,
+        tooth: Tooth
+    )
 }
 data class RestoreSummary(
     val remoteCount: Int,

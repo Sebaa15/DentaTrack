@@ -34,16 +34,21 @@ fun OdontogramScreen(
     LaunchedEffect(Unit){
         viewModel.effect.collect{ effect->
             when(effect){
-                is OdontogramEffect.NavigateToTreatmentDetail->{
-                    navController.navigate(NavRoute.TreatmentDetail(toothNumber=effect.toothNumber))
+                is OdontogramEffect.NavigateToTreatmentDetail -> {
+
+                    navController.navigate(
+                        NavRoute.TreatmentDetail(
+                            userId = userId,
+                            toothNumber = effect.toothNumber
+                        )
+                    )
                 }
                 OdontogramEffect.NavigateToLogin -> {
 
                     navController.navigate(
                         NavRoute.Login
                     ) {
-
-                        popUpTo<NavRoute.Login> {
+                        popUpTo<NavRoute.Home> {
                             inclusive = true
                         }
                     }
@@ -52,6 +57,32 @@ fun OdontogramScreen(
         }
     }
     OdontogramContent(
+        onStatusChanged = { status ->
+            viewModel.emitEvent(
+                OdontogramEvent.StatusChanged(status)
+            )
+        },
+
+        onTreatmentChanged = { treatment ->
+            viewModel.emitEvent(
+                OdontogramEvent.TreatmentChanged(treatment)
+            )
+        },
+
+        onSaveTooth = {
+            viewModel.emitEvent(
+                OdontogramEvent.SaveClicked
+            )
+        },
+        onViewTreatment = {
+            viewModel.emitEvent(
+                OdontogramEvent.ViewTreatmentClicked
+            )
+        },
+
+        onBack = {
+            navController.popBackStack()
+        },
         state=state, onToothSelected = {toothNumber->
             viewModel.emitEvent(
                 OdontogramEvent.ToothSelected(toothNumber)

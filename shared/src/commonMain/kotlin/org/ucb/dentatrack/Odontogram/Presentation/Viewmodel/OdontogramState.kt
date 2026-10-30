@@ -1,6 +1,7 @@
 package org.ucb.dentatrack.Odontogram.Presentation.Viewmodel
 
 import org.ucb.dentatrack.Odontogram.Domain.Model.Tooth
+import org.ucb.dentatrack.Odontogram.Domain.Model.ToothStatus
 
 data class OdontogramState(
 
@@ -10,5 +11,9 @@ data class OdontogramState(
     val title: String = "MI ODONTOGRAMA",
     val treatmentDetailEnabled: Boolean = true,
     val isSyncing: Boolean = false,
-    val syncMessage: String? = null
+    val syncMessage: String? = null,
+    val editingStatus: ToothStatus? = null,
+    val editingTreatment: String = "",
+    val isSaving: Boolean = false,
+    val saveMessage: String? = null
 )

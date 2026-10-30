@@ -18,11 +18,16 @@ sealed class NavRoute {
 
     @Serializable
     data class TreatmentDetail(
+        val userId: String,
         val toothNumber: Int
-    ): NavRoute()
+    ) : NavRoute()
 
     @Serializable
     data object Profile : NavRoute()
     @Serializable
     data object Settings : NavRoute()
+    @Serializable
+    data class Home(
+        val userId: String
+    ) : NavRoute()
 }

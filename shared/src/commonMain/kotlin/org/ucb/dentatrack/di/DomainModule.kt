@@ -13,6 +13,8 @@ import org.ucb.dentatrack.Notifications.Domain.UseCase.UnregisterDeviceTokenUseC
 import org.ucb.dentatrack.Odontogram.Domain.UseCase.GetOdontogramUseCase
 import org.ucb.dentatrack.Odontogram.Domain.UseCase.RestoreOdontogramUseCase
 import org.ucb.dentatrack.Register.Domain.UseCase.RegisterUseCase
+import org.ucb.dentatrack.Login.Domain.UseCase.GetCurrentUserUseCase
+import org.ucb.dentatrack.Odontogram.Domain.UseCase.SaveToothUseCase
 
 val domainModule = module {
 
@@ -27,4 +29,6 @@ val domainModule = module {
     singleOf(::SendLogsUseCase)
     singleOf(::SyncOdontogramUseCase)
     singleOf(::RestoreOdontogramUseCase)
+    singleOf(::GetCurrentUserUseCase)
+    singleOf(::SaveToothUseCase)
 }

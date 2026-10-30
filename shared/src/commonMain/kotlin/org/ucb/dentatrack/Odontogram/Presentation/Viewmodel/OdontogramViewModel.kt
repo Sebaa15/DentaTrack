@@ -1,5 +1,9 @@
 package org.ucb.dentatrack.Odontogram.Presentation.Viewmodel
 
+import org.ucb.dentatrack.Odontogram.Domain.Model.ToothStatus
+import org.ucb.dentatrack.Odontogram.Domain.Model.Tooth
+import org.ucb.dentatrack.Odontogram.Domain.Model.UPPER_TOOTH_NUMBERS
+import org.ucb.dentatrack.Odontogram.Domain.Model.LOWER_TOOTH_NUMBERS
 import org.ucb.dentatrack.Odontogram.Domain.UseCase.SyncOdontogramUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +19,7 @@ import org.ucb.dentatrack.Login.Domain.UseCase.LogoutUseCase
 import org.ucb.dentatrack.Notifications.Domain.UseCase.UnregisterDeviceTokenUseCase
 import org.ucb.dentatrack.Odontogram.Domain.UseCase.GetOdontogramUseCase
 import org.ucb.dentatrack.Odontogram.Domain.UseCase.RestoreOdontogramUseCase
+import org.ucb.dentatrack.Odontogram.Domain.UseCase.SaveToothUseCase
 import org.ucb.dentatrack.sheduler.OdontogramWorkScheduler
 
 class OdontogramViewModel(
@@ -24,7 +29,8 @@ class OdontogramViewModel(
     private val logoutUseCase: LogoutUseCase,
     private val syncOdontogramUseCase: SyncOdontogramUseCase,
     private val restoreOdontogramUseCase: RestoreOdontogramUseCase,
-    private val workScheduler: OdontogramWorkScheduler
+    private val workScheduler: OdontogramWorkScheduler,
+    private val saveToothUseCase: SaveToothUseCase
 ) : ViewModel() {
     private var currentUserId: String? = null
     private val _state = MutableStateFlow(OdontogramState())
@@ -42,6 +48,49 @@ class OdontogramViewModel(
     ) {
 
         when (event) {
+            is OdontogramEvent.StatusChanged -> {
+
+                if (!state.value.isSaving) {
+                    _state.update {
+                        it.copy(
+                            editingStatus = event.status,
+                            saveMessage = null
+                        )
+                    }
+                }
+            }
+
+            is OdontogramEvent.TreatmentChanged -> {
+
+                if (!state.value.isSaving) {
+                    _state.update {
+                        it.copy(
+                            editingTreatment = event.treatment,
+                            saveMessage = null
+                        )
+                    }
+                }
+            }
+
+            OdontogramEvent.SaveClicked -> {
+                saveSelectedTooth()
+            }
+            OdontogramEvent.ViewTreatmentClicked -> {
+
+                val tooth = state.value.selectedTooth
+
+                if (
+                    tooth != null &&
+                    tooth.status != ToothStatus.UNREGISTERED &&
+                    state.value.treatmentDetailEnabled
+                ) {
+                    emitEffect(
+                        OdontogramEffect.NavigateToTreatmentDetail(
+                            tooth.number
+                        )
+                    )
+                }
+            }
             OdontogramEvent.SyncClicked -> {
                 syncOdontogram()
             }
@@ -57,33 +106,23 @@ class OdontogramViewModel(
             }
             is OdontogramEvent.ToothSelected -> {
 
-                val tooth =
-                    state.value.teeth.find {
-                        it.number ==
-                                event.toothNumber
-                    }
+                if (state.value.isSaving) return
+
+                val tooth = state.value.teeth.find {
+                    it.number == event.toothNumber
+                }
 
                 _state.update {
                     it.copy(
-                        selectedTooth = tooth
-                    )
-                }
-
-                if (
-                    tooth != null &&
-                    state.value
-                        .treatmentDetailEnabled
-                ) {
-
-                    emitEffect(
-                        OdontogramEffect
-                            .NavigateToTreatmentDetail(
-                                tooth.number
-                            )
+                        selectedTooth = tooth,
+                        editingStatus = tooth?.status?.takeIf { status ->
+                            status != ToothStatus.UNREGISTERED
+                        },
+                        editingTreatment = tooth?.treatment.orEmpty(),
+                        saveMessage = null
                     )
                 }
             }
-
             OdontogramEvent.LogoutClicked -> {
                 logout()
             }
@@ -92,21 +131,47 @@ class OdontogramViewModel(
 
     private fun loadOdontogram() {
         val userId = currentUserId ?: return
+
         viewModelScope.launch {
 
             _state.update {
-                it.copy(
-                    isLoading = true
-                )
+                it.copy(isLoading = true)
             }
 
-            val teeth = getOdontogramUseCase(userId)
+            try {
+                val savedTeeth = getOdontogramUseCase(userId)
 
-            _state.update {
-                it.copy(
-                    teeth = teeth,
-                    isLoading = false
-                )
+                val teethByNumber = savedTeeth.associateBy {
+                    it.number
+                }
+
+                val allNumbers =
+                    UPPER_TOOTH_NUMBERS + LOWER_TOOTH_NUMBERS
+
+                val allTeeth = allNumbers.map { number ->
+
+                    teethByNumber[number] ?: Tooth(
+                        number = number,
+                        status = ToothStatus.UNREGISTERED
+                    )
+                }
+
+                _state.update {
+                    it.copy(
+                        teeth = allTeeth,
+                        selectedTooth = null,
+                        isLoading = false
+                    )
+                }
+
+            } catch (e: Exception) {
+                println("ODONTOGRAM_ERROR: ${e.message}")
+
+                _state.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
             }
         }
     }
@@ -226,7 +291,7 @@ class OdontogramViewModel(
                         isSyncing = false,
                         syncMessage =
                             "${result.remoteCount} dientes descargados, " +
-                                    "${result.insertedCount} nuevos guardados en Room"
+                                    "${result.insertedCount} nuevos guardados en Room",
                     )
                 }
 
@@ -236,6 +301,76 @@ class OdontogramViewModel(
                     it.copy(
                         isSyncing = false,
                         syncMessage = "Error al recuperar Firestore"
+                    )
+                }
+            }
+            loadOdontogram()
+        }
+    }
+    private fun saveSelectedTooth() {
+
+        val userId = currentUserId ?: return
+        val currentState = state.value
+
+        val tooth = currentState.selectedTooth ?: return
+        val newStatus = currentState.editingStatus ?: return
+
+        if (currentState.isSaving || currentState.isSyncing) {
+            return
+        }
+
+        viewModelScope.launch {
+
+            _state.update {
+                it.copy(
+                    isSaving = true,
+                    saveMessage = null
+                )
+            }
+
+            try {
+                val updatedTooth = tooth.copy(
+                    status = newStatus,
+                    treatment = currentState.editingTreatment
+                )
+
+                saveToothUseCase(
+                    userId = userId,
+                    tooth = updatedTooth
+                )
+
+                // Consultar nuevamente Room
+                val savedTooth = getOdontogramUseCase(userId)
+                    .first { it.number == tooth.number }
+
+                _state.update { current ->
+                    current.copy(
+                        teeth = current.teeth.map {
+                            if (it.number == savedTooth.number)
+                                savedTooth
+                            else
+                                it
+                        },
+                        selectedTooth = savedTooth,
+                        editingStatus = savedTooth.status,
+                        editingTreatment =
+                            savedTooth.treatment.orEmpty(),
+                        isSaving = false,
+                        saveMessage =
+                            "Pieza ${savedTooth.number} guardada correctamente",
+                        syncMessage = null
+                    )
+                }
+
+            } catch (e: Exception) {
+
+                println("SAVE_TOOTH_ERROR: ${e.message}")
+
+                _state.update {
+                    it.copy(
+                        isSaving = false,
+                        saveMessage =
+                            "Error al guardar la pieza dental"
                     )
                 }
             }

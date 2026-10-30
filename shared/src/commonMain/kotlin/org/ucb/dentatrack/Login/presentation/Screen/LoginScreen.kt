@@ -22,13 +22,15 @@ fun LoginScreen(
 
         viewModel.effect.collect { effect ->
             when (effect) {
-                is LoginEffect.NavigateToOdontogram -> {
+                is LoginEffect.NavigateToHome -> {
 
                     navController.navigate(
-                        NavRoute.Odontogram(
-                            userId = effect.userId
-                        )
-                    )
+                        NavRoute.Home(effect.userId)
+                    ) {
+                        popUpTo<NavRoute.Login> {
+                            inclusive = true
+                        }
+                    }
                 }
                 is LoginEffect.ShowMessage -> {
                     // Luego conectaremos Snackbar o Toast
