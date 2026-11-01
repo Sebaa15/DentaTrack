@@ -15,6 +15,8 @@ import org.ucb.dentatrack.Odontogram.Domain.UseCase.RestoreOdontogramUseCase
 import org.ucb.dentatrack.Register.Domain.UseCase.RegisterUseCase
 import org.ucb.dentatrack.Login.Domain.UseCase.GetCurrentUserUseCase
 import org.ucb.dentatrack.Odontogram.Domain.UseCase.SaveToothUseCase
+import org.ucb.dentatrack.TreatmentPlan.Domain.UseCase.GetTreatmentPlanUseCase
+import org.ucb.dentatrack.TreatmentPlan.Domain.UseCase.SaveTreatmentStepUseCase
 
 val domainModule = module {
 
@@ -31,4 +33,6 @@ val domainModule = module {
     singleOf(::RestoreOdontogramUseCase)
     singleOf(::GetCurrentUserUseCase)
     singleOf(::SaveToothUseCase)
+    singleOf(::GetTreatmentPlanUseCase)
+    singleOf(::SaveTreatmentStepUseCase)
 }

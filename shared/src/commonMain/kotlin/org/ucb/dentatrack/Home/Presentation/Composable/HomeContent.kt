@@ -16,7 +16,8 @@ import org.ucb.dentatrack.Home.Presentation.Viewmodel.HomeState
 fun HomeContent(
     state: HomeState,
     onOdontogramClick: () -> Unit,
-    onSettings: () -> Unit
+    onSettings: () -> Unit,
+    onPlanClick: () -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
 
@@ -89,11 +90,85 @@ fun HomeContent(
                     description = "No tienes citas registradas"
                 )
 
-                // Progreso
-                InformationCard(
-                    title = "Progreso del tratamiento",
-                    description = "Aún no tienes un plan registrado"
-                )
+                if (state.planError != null) {
+
+                    InformationCard(
+                        title = "Progreso del tratamiento",
+                        description = state.planError
+                    )
+
+                } else if (state.totalSteps == 0) {
+
+                    InformationCard(
+                        title = "Progreso del tratamiento",
+                        description = "Todavía no tienes etapas registradas"
+                    )
+
+                } else {
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement =
+                                    Arrangement.SpaceBetween,
+                                verticalAlignment =
+                                    Alignment.CenterVertically
+                            ) {
+
+                                Text(
+                                    text = "Progreso del tratamiento",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+
+                                Text(
+                                    text = "${state.progressPercentage}%",
+                                    color = MaterialTheme.colorScheme.primary,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            }
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(8.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.surfaceVariant,
+                                        MaterialTheme.shapes.small
+                                    )
+                            ) {
+
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(state.planProgress)
+                                        .fillMaxHeight()
+                                        .background(
+                                            MaterialTheme.colorScheme.primary,
+                                            MaterialTheme.shapes.small
+                                        )
+                                )
+                            }
+
+                            Text(
+                                text = "${state.completedSteps} de " +
+                                        "${state.totalSteps} etapas completadas",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+
+                            TextButton(
+                                onClick = onPlanClick
+                            ) {
+                                Text("Ver plan completo")
+                            }
+                        }
+                    }
+                }
 
                 Text(
                     text = "Accesos rápidos",
@@ -128,10 +203,27 @@ fun HomeContent(
                         }
                     }
 
-                    PendingActionCard(
-                        title = "Mi tratamiento",
-                        modifier = Modifier.weight(1f)
-                    )
+                    MainCard(
+                        onClick = onPlanClick,
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 110.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(
+                                text = "Mi tratamiento",
+                                style = MaterialTheme.typography.titleSmall
+                            )
+
+                            Text(
+                                text = "Ver mi plan y progreso",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
                 }
 
                 Row(

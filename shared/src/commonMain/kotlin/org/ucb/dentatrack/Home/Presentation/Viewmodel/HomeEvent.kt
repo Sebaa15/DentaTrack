@@ -7,4 +7,5 @@ sealed interface HomeEvent {
     ) : HomeEvent
 
     data object OdontogramClicked : HomeEvent
+    data object PlanClicked : HomeEvent
 }

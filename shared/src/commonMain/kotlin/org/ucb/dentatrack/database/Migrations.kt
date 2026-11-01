@@ -83,3 +83,22 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         connection.execSQL("ALTER TABLE `teeth_new` RENAME TO `teeth`")
     }
 }
+val MIGRATION_3_4 = object : Migration(3, 4) {
+
+    override suspend fun migrate(
+        connection: SQLiteConnection
+    ) {
+        connection.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS `treatment_steps` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                `userId` INTEGER NOT NULL,
+                `title` TEXT NOT NULL,
+                `date` TEXT NOT NULL,
+                `note` TEXT NOT NULL,
+                `status` TEXT NOT NULL
+            )
+            """.trimIndent()
+        )
+    }
+}

@@ -13,6 +13,7 @@ import org.ucb.dentatrack.Login.presentation.Screen.LoginScreen
 import org.ucb.dentatrack.Odontogram.Presentation.Screen.OdontogramScreen
 import org.ucb.dentatrack.Register.Presentation.Screen.RegisterScreen
 import org.ucb.dentatrack.TreatmentDetail.Presentation.Screen.TreatmentDetailScreen
+import org.ucb.dentatrack.TreatmentPlan.Presentation.Screen.TreatmentPlanScreen
 
 @Composable
 fun AppNavHost(
@@ -95,6 +96,18 @@ fun AppNavHost(
                 userId = route.userId,
                 onOpenSettings = {
                     navController.navigate(NavRoute.Settings)
+                }
+            )
+        }
+        composable<NavRoute.TreatmentPlan> { backStackEntry ->
+
+            val route =
+                backStackEntry.toRoute<NavRoute.TreatmentPlan>()
+
+            TreatmentPlanScreen(
+                userId = route.userId,
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }

@@ -15,6 +15,8 @@ import org.ucb.dentatrack.Odontogram.Data.Repository.OdontogramRepositoryImpl
 import org.ucb.dentatrack.Odontogram.Domain.Repository.OdontogramRepository
 import org.ucb.dentatrack.Register.Data.Repository.RegisterRepositoryImpl
 import org.ucb.dentatrack.Register.Domain.Repository.RegisterRepository
+import org.ucb.dentatrack.TreatmentPlan.Data.Repository.TreatmentPlanRepositoryImpl
+import org.ucb.dentatrack.TreatmentPlan.Domain.Repository.TreatmentPlanRepository
 import org.ucb.dentatrack.User.Data.DataSource.UserLocalDataSource
 import org.ucb.dentatrack.User.Data.DataSource.UserLocalDataSourceImpl
 import org.ucb.dentatrack.database.AppDatabase
@@ -78,5 +80,12 @@ val dataModule = module {
     }
     single {
         OdontogramFirestoreDataSource()
+    }
+    single {
+        get<AppDatabase>().treatmentStepDao()
+    }
+
+    single<TreatmentPlanRepository> {
+        TreatmentPlanRepositoryImpl(get())
     }
 }

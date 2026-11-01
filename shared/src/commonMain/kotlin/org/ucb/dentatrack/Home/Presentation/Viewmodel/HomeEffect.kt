@@ -5,6 +5,8 @@ sealed interface HomeEffect {
     data class NavigateToOdontogram(
         val userId: String
     ) : HomeEffect
-
+    data class NavigateToPlan(
+        val userId: String
+    ) : HomeEffect
     data object NavigateToLogin : HomeEffect
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -23,10 +24,17 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(userId) {
-        viewModel.emitEvent(
-            HomeEvent.Start(userId)
-        )
+    LaunchedEffect(userId, navController) {
+
+        navController.currentBackStackEntryFlow.collect { entry ->
+
+            if (entry.destination.hasRoute<NavRoute.Home>()) {
+
+                viewModel.emitEvent(
+                    HomeEvent.Start(userId)
+                )
+            }
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -46,6 +54,12 @@ fun HomeScreen(
                         }
                     }
                 }
+                is HomeEffect.NavigateToPlan -> {
+
+                    navController.navigate(
+                        NavRoute.TreatmentPlan(effect.userId)
+                    )
+                }
             }
         }
     }
@@ -57,6 +71,11 @@ fun HomeScreen(
                 HomeEvent.OdontogramClicked
             )
         },
-        onSettings = onOpenSettings
+        onSettings = onOpenSettings,
+        onPlanClick = {
+            viewModel.emitEvent(
+                HomeEvent.PlanClicked
+            )
+        },
     )
 }

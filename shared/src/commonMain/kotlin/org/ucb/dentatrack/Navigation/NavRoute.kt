@@ -30,4 +30,8 @@ sealed class NavRoute {
     data class Home(
         val userId: String
     ) : NavRoute()
+    @Serializable
+    data class TreatmentPlan(
+        val userId: String
+    ) : NavRoute()
 }
