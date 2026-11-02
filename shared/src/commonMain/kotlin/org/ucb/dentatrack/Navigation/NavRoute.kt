@@ -34,4 +34,8 @@ sealed class NavRoute {
     data class TreatmentPlan(
         val userId: String
     ) : NavRoute()
+    @Serializable
+    data class Appointments(
+        val userId: String
+    ) : NavRoute()
 }

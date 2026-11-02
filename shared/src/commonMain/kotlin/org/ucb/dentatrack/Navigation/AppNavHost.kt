@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import org.ucb.dentatrack.Appointments.Presentation.Screen.AppointmentsScreen
 import org.ucb.dentatrack.Login.presentation.Screen.LoginScreen
 import org.ucb.dentatrack.Odontogram.Presentation.Screen.OdontogramScreen
 import org.ucb.dentatrack.Register.Presentation.Screen.RegisterScreen
@@ -105,6 +106,18 @@ fun AppNavHost(
                 backStackEntry.toRoute<NavRoute.TreatmentPlan>()
 
             TreatmentPlanScreen(
+                userId = route.userId,
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<NavRoute.Appointments> { backStackEntry ->
+
+            val route =
+                backStackEntry.toRoute<NavRoute.Appointments>()
+
+            AppointmentsScreen(
                 userId = route.userId,
                 onBack = {
                     navController.popBackStack()

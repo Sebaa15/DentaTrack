@@ -4,6 +4,9 @@ import org.ucb.dentatrack.Odontogram.Domain.UseCase.SyncOdontogramUseCase
 import org.ucb.dentatrack.Logs.Domain.UseCase.SendLogsUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import org.ucb.dentatrack.Appointments.Domain.UseCase.ChangeAppointmentStatusUseCase
+import org.ucb.dentatrack.Appointments.Domain.UseCase.GetAppointmentsUseCase
+import org.ucb.dentatrack.Appointments.Domain.UseCase.SaveAppointmentUseCase
 import org.ucb.dentatrack.Configuration.Domain.UseCase.ObserveRemoteConfigUseCase
 import org.ucb.dentatrack.Login.Domain.UseCase.LoginUseCase
 import org.ucb.dentatrack.Login.Domain.UseCase.LogoutUseCase
@@ -35,4 +38,7 @@ val domainModule = module {
     singleOf(::SaveToothUseCase)
     singleOf(::GetTreatmentPlanUseCase)
     singleOf(::SaveTreatmentStepUseCase)
+    singleOf(::GetAppointmentsUseCase)
+    singleOf(::SaveAppointmentUseCase)
+    singleOf(::ChangeAppointmentStatusUseCase)
 }

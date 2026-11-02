@@ -17,7 +17,8 @@ fun HomeContent(
     state: HomeState,
     onOdontogramClick: () -> Unit,
     onSettings: () -> Unit,
-    onPlanClick: () -> Unit
+    onPlanClick: () -> Unit,
+    onAppointmentsClick: () -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
 
@@ -231,10 +232,27 @@ fun HomeContent(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
 
-                    PendingActionCard(
-                        title = "Mis citas",
-                        modifier = Modifier.weight(1f)
-                    )
+                    MainCard(
+                        onClick = onAppointmentsClick,
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 110.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(
+                                text = "Mis citas",
+                                style = MaterialTheme.typography.titleSmall
+                            )
+
+                            Text(
+                                text = "Ver y agendar citas",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
 
                     PendingActionCard(
                         title = "Cuidados",

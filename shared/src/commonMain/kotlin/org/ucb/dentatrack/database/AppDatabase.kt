@@ -1,5 +1,7 @@
 package org.ucb.dentatrack.database
 
+import org.ucb.dentatrack.Appointments.Data.Dao.AppointmentDao
+import org.ucb.dentatrack.Appointments.Data.Entity.AppointmentEntity
 import org.ucb.dentatrack.TreatmentPlan.Data.Dao.TreatmentStepDao
 import org.ucb.dentatrack.TreatmentPlan.Data.Entity.TreatmentStepEntity
 import androidx.room3.ConstructedBy
@@ -18,9 +20,10 @@ import org.ucb.dentatrack.User.Data.Entity.UserEntity
     entities = [
         UserEntity::class,
         ToothEntity::class,
-        TreatmentStepEntity::class
+        TreatmentStepEntity::class,
+        AppointmentEntity::class
     ],
-    version = 4
+    version = 5
 )
 @ConstructedBy(
     AppDatabaseConstructor::class
@@ -30,6 +33,7 @@ abstract class AppDatabase :
     abstract fun userDao(): UserDao
     abstract fun toothDao(): ToothDao
     abstract fun treatmentStepDao(): TreatmentStepDao
+    abstract fun appointmentDao(): AppointmentDao
 }
 
 @Suppress(
@@ -50,7 +54,8 @@ fun getRoomDatabase(
         .addMigrations(
             MIGRATION_1_2,
             MIGRATION_2_3,
-            MIGRATION_3_4
+            MIGRATION_3_4,
+            MIGRATION_4_5
         )
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)

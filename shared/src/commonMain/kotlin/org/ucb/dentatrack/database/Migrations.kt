@@ -102,3 +102,23 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
         )
     }
 }
+val MIGRATION_4_5 = object : Migration(4, 5) {
+
+    override suspend fun migrate(
+        connection: SQLiteConnection
+    ) {
+        connection.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS `appointments` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                `userId` INTEGER NOT NULL,
+                `reason` TEXT NOT NULL,
+                `doctor` TEXT NOT NULL,
+                `date` TEXT NOT NULL,
+                `time` TEXT NOT NULL,
+                `status` TEXT NOT NULL
+            )
+            """.trimIndent()
+        )
+    }
+}

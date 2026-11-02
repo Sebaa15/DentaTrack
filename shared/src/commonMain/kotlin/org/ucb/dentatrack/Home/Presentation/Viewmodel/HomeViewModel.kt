@@ -45,6 +45,18 @@ class HomeViewModel(
                     }
                 }
             }
+            HomeEvent.AppointmentsClicked -> {
+
+                val userId = state.value.userId
+
+                if (userId != null) {
+                    viewModelScope.launch {
+                        _effect.emit(
+                            HomeEffect.NavigateToAppointments(userId)
+                        )
+                    }
+                }
+            }
         }
     }
 

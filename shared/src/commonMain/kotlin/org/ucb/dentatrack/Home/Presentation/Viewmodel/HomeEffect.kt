@@ -9,4 +9,7 @@ sealed interface HomeEffect {
         val userId: String
     ) : HomeEffect
     data object NavigateToLogin : HomeEffect
+    data class NavigateToAppointments(
+        val userId: String
+    ) : HomeEffect
 }
