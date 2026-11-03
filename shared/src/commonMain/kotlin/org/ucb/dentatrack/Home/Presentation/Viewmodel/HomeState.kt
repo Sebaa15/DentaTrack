@@ -1,5 +1,6 @@
 package org.ucb.dentatrack.Home.Presentation.Viewmodel
 
+import org.ucb.dentatrack.Appointments.Domain.Model.Appointment
 data class HomeState(
     val userId: String? = null,
     val userName: String = "",
@@ -8,7 +9,9 @@ data class HomeState(
 
     val totalSteps: Int = 0,
     val completedSteps: Int = 0,
-    val planError: String? = null
+    val planError: String? = null,
+    val nextAppointment: Appointment? = null,
+    val appointmentError: String? = null
 ) {
     val planProgress: Float
         get() = if (totalSteps == 0) {
@@ -16,7 +19,6 @@ data class HomeState(
         } else {
             completedSteps.toFloat() / totalSteps
         }
-
     val progressPercentage: Int
         get() = (planProgress * 100).toInt()
 }

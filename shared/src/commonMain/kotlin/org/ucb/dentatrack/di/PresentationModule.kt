@@ -4,6 +4,7 @@ import org.ucb.dentatrack.Home.Presentation.Viewmodel.HomeViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import org.ucb.dentatrack.Appointments.Presentation.Viewmodel.AppointmentsViewModel
+import org.ucb.dentatrack.Care.Presentation.Viewmodel.CareViewModel
 import org.ucb.dentatrack.Login.presentation.Viewmodel.LoginViewModel
 import org.ucb.dentatrack.Odontogram.Presentation.Viewmodel.OdontogramViewModel
 import org.ucb.dentatrack.Register.Presentation.VIewmodel.RegisterViewModel
@@ -19,4 +20,5 @@ val presentationModule = module {
     viewModelOf(::TreatmentDetailViewModel)
     viewModelOf(::TreatmentPlanViewModel)
     viewModelOf(::AppointmentsViewModel)
+    viewModelOf(::CareViewModel)
 }

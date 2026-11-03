@@ -1,5 +1,8 @@
 package org.ucb.dentatrack.Home.Presentation.Viewmodel
 
+import org.ucb.dentatrack.Appointments.Domain.Model.Appointment
+import org.ucb.dentatrack.Appointments.Domain.Model.AppointmentStatus
+import org.ucb.dentatrack.Appointments.Domain.UseCase.GetAppointmentsUseCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,7 +17,8 @@ import org.ucb.dentatrack.TreatmentPlan.Domain.UseCase.GetTreatmentPlanUseCase
 
 class HomeViewModel(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val getTreatmentPlanUseCase: GetTreatmentPlanUseCase
+    private val getTreatmentPlanUseCase: GetTreatmentPlanUseCase,
+    private val getAppointmentsUseCase: GetAppointmentsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -57,6 +61,18 @@ class HomeViewModel(
                     }
                 }
             }
+            HomeEvent.CareClicked -> {
+
+                val userId = state.value.userId
+
+                if (userId != null) {
+                    viewModelScope.launch {
+                        _effect.emit(
+                            HomeEffect.NavigateToCare(userId)
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -69,6 +85,8 @@ class HomeViewModel(
                     isLoading = true,
                     error = null,
                     planError = null,
+                    appointmentError = null,
+                    nextAppointment = null,
                     totalSteps = 0,
                     completedSteps = 0
                 )
@@ -110,14 +128,40 @@ class HomeViewModel(
                     println("HOME_PLAN_ERROR: ${e.message}")
                     planError = "No se pudo cargar el progreso"
                 }
+                var nextAppointment: Appointment? = null
+                var appointmentError: String? = null
 
+                try {
+                    val appointments = getAppointmentsUseCase(userId)
+
+                    nextAppointment = appointments
+                        .filter {
+                            it.status == AppointmentStatus.SCHEDULED
+                        }
+                        .minWithOrNull(
+                            compareBy<Appointment> { it.date }
+                                .thenBy { it.time }
+                                .thenBy { it.id }
+                        )
+
+                } catch (e: Exception) {
+
+                    println("HOME_APPOINTMENTS_ERROR: ${e.message}")
+
+                    appointmentError = "No se pudieron cargar las citas"
+                }
                 _state.update {
                     it.copy(
                         userId = user.id,
                         userName = user.fullName,
+
                         totalSteps = total,
                         completedSteps = completed,
                         planError = planError,
+
+                        nextAppointment = nextAppointment,
+                        appointmentError = appointmentError,
+
                         isLoading = false,
                         error = null
                     )
@@ -126,7 +170,6 @@ class HomeViewModel(
             } catch (e: Exception) {
 
                 println("HOME_ERROR: ${e.message}")
-
                 _state.update {
                     it.copy(
                         isLoading = false,

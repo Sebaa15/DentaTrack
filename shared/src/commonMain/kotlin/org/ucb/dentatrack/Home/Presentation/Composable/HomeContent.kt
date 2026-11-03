@@ -18,7 +18,8 @@ fun HomeContent(
     onOdontogramClick: () -> Unit,
     onSettings: () -> Unit,
     onPlanClick: () -> Unit,
-    onAppointmentsClick: () -> Unit
+    onAppointmentsClick: () -> Unit,
+    onCareClick: () -> Unit
 ) {
     val colors = MaterialTheme.colorScheme
 
@@ -86,10 +87,90 @@ fun HomeContent(
             } else {
 
                 // Próxima cita
-                InformationCard(
-                    title = "Próxima cita",
-                    description = "No tienes citas registradas"
-                )
+                if (state.appointmentError != null) {
+
+                    InformationCard(
+                        title = "Próxima cita",
+                        description = state.appointmentError
+                    )
+
+                } else if (state.nextAppointment == null) {
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement =
+                                Arrangement.spacedBy(12.dp)
+                        ) {
+
+                            Text(
+                                text = "Próxima cita",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+
+                            Text(
+                                text = "No tienes citas agendadas",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+
+                            TextButton(
+                                onClick = onAppointmentsClick
+                            ) {
+                                Text("Agendar una cita")
+                            }
+                        }
+                    }
+
+                } else {
+
+                    val appointment = state.nextAppointment
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor =
+                                MaterialTheme.colorScheme.primaryContainer
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(20.dp),
+                            verticalArrangement =
+                                Arrangement.spacedBy(12.dp)
+                        ) {
+
+                            Text(
+                                text = "Próxima cita agendada",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+
+                            Text(
+                                text = "${appointment.date} · ${appointment.time}",
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+
+                            Text(
+                                text = appointment.reason,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+
+                            Text(
+                                text = appointment.doctor,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+
+                            Button(
+                                onClick = onAppointmentsClick,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("Ver o reprogramar cita")
+                            }
+                        }
+                    }
+                }
 
                 if (state.planError != null) {
 
@@ -254,10 +335,28 @@ fun HomeContent(
                         }
                     }
 
-                    PendingActionCard(
-                        title = "Cuidados",
-                        modifier = Modifier.weight(1f)
-                    )
+                    MainCard(
+                        onClick = onCareClick,
+                        modifier = Modifier
+                            .weight(1f)
+                            .heightIn(min = 110.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+
+                            Text(
+                                text = "Mis cuidados",
+                                style = MaterialTheme.typography.titleSmall
+                            )
+
+                            Text(
+                                text = "Ver indicaciones diarias",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
                 }
 
                 InformationCard(

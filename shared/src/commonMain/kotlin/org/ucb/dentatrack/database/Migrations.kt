@@ -122,3 +122,32 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         )
     }
 }
+val MIGRATION_5_6 = object : Migration(5, 6) {
+
+    override suspend fun migrate(
+        connection: SQLiteConnection
+    ) {
+
+        connection.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS `care_items` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                `userId` INTEGER NOT NULL,
+                `title` TEXT NOT NULL,
+                `note` TEXT NOT NULL
+            )
+            """.trimIndent()
+        )
+
+        connection.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS `care_checks` (
+                `userId` INTEGER NOT NULL,
+                `careId` INTEGER NOT NULL,
+                `date` TEXT NOT NULL,
+                PRIMARY KEY(`userId`, `careId`, `date`)
+            )
+            """.trimIndent()
+        )
+    }
+}

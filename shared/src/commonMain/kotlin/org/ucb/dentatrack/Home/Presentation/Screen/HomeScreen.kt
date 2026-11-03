@@ -66,6 +66,11 @@ fun HomeScreen(
                         NavRoute.Appointments(effect.userId)
                     )
                 }
+                is HomeEffect.NavigateToCare -> {
+                    navController.navigate(
+                        NavRoute.Care(effect.userId)
+                    )
+                }
             }
         }
     }
@@ -87,6 +92,11 @@ fun HomeScreen(
             viewModel.emitEvent(
                 HomeEvent.AppointmentsClicked
             )
-        }
+        },
+        onCareClick = {
+            viewModel.emitEvent(
+                HomeEvent.CareClicked
+            )
+        },
     )
 }

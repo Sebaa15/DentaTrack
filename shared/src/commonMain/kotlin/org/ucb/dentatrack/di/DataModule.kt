@@ -3,6 +3,8 @@ package org.ucb.dentatrack.di
 import org.koin.dsl.module
 import org.ucb.dentatrack.Appointments.Data.Repository.AppointmentRepositoryImpl
 import org.ucb.dentatrack.Appointments.Domain.Repository.AppointmentRepository
+import org.ucb.dentatrack.Care.Data.Repository.CareRepositoryImpl
+import org.ucb.dentatrack.Care.Domain.Repository.CareRepository
 import org.ucb.dentatrack.Configuration.Data.Repository.RemoteConfigRepositoryImpl
 import org.ucb.dentatrack.Configuration.Domain.Repository.RemoteConfigRepository
 import org.ucb.dentatrack.Login.Data.Repository.LoginRepositoryImpl
@@ -96,5 +98,12 @@ val dataModule = module {
 
     single<AppointmentRepository> {
         AppointmentRepositoryImpl(get())
+    }
+    single {
+        get<AppDatabase>().careDao()
+    }
+
+    single<CareRepository> {
+        CareRepositoryImpl(get())
     }
 }

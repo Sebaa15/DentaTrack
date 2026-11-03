@@ -38,4 +38,8 @@ sealed class NavRoute {
     data class Appointments(
         val userId: String
     ) : NavRoute()
+    @Serializable
+    data class Care(
+        val userId: String
+    ) : NavRoute()
 }

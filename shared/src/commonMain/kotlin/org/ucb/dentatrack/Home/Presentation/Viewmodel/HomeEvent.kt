@@ -9,4 +9,5 @@ sealed interface HomeEvent {
     data object OdontogramClicked : HomeEvent
     data object PlanClicked : HomeEvent
     data object AppointmentsClicked : HomeEvent
+    data object CareClicked : HomeEvent
 }
